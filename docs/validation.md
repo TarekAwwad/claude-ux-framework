@@ -28,7 +28,7 @@ and C25-C28 (single-page app, no cross-screen navigation to be consistent about)
 
 Where both pass and it matters: C2, C4, C7-C10, C17-C20, C22 pass on both.
 Chart-type fit (C20), the small semantic palette (C9), right-aligned numerics
-(C14/C23 numeric half), and no-pie/no-gauge all hold on both sides because both
+(C23), and no-pie/no-gauge all hold on both sides because both
 agents shared chart-level guidance (see the caveat below). C19 passes on both,
 but by different means: the baseline carries context through delta plus
 sparkline only, while the with-skill build adds explicit targets and benchmarks

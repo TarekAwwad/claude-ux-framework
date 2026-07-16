@@ -16,7 +16,7 @@ Apply to every UI. Ordered by how often agents get them wrong.
 
 ## States
 
-- Design and build the empty, loading, and error states for every data-backed view, not just the populated one. Check: each data view renders sensibly with zero rows, in flight, and on failure. <!-- P3 -->
+- Design and build the empty, loading, error, and partial-data states for every data-backed view, not just the populated one. Check: each data view renders sensibly with zero rows, in flight, on failure, and when only part of the data is available. <!-- P3 -->
 - Write empty states and error messages as guidance (what happened, what to do next), not bare "No data" or raw error text. <!-- P18 -->
 
 ## Feedback and affordance

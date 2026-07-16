@@ -37,4 +37,5 @@ navigation and app shell. Forms and tables are planned as future modules.
 
 - `skills/ux-framework/` is the installable skill (self-contained)
 - `research/` holds the findings the rules were distilled from, with sources
-- `docs/superpowers/` holds the design spec and this plan
+- `docs/superpowers/` holds the design spec and implementation plan;
+  `docs/validation.md` records the with/without smoke test
