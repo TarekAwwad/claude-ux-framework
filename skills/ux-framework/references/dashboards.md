@@ -19,8 +19,9 @@ dashboard:
 
 Mixing types on one screen is the #1 agent failure. Pick one per screen.
 
-The triage above is D1 and D2: design each section as the answer to a stated
-question, and cut any metric no decision depends on.
+The triage above is D1 and D2: name the audience and the decision the
+dashboard drives, design each section as the answer to a stated question, and
+cut any metric no decision depends on.
 <!-- D1 --><!-- D2 -->
 
 ## KPI hierarchy
@@ -50,12 +51,8 @@ question, and cut any metric no decision depends on.
 
 ## Time and comparison
 
-- Give the whole screen one time-range control; do not scatter per-widget
-  date pickers.
 - Show the comparison basis on every metric (target, prior period, or
   benchmark). This is D6 above.
-- Label the timezone and the last-updated time so a stale or mismatched view
-  is visible.
 
 ## Drill-down and filtering
 
@@ -63,19 +60,12 @@ question, and cut any metric no decision depends on.
   rows. <!-- D13 -->
 - Progressively reveal secondary and row-level actions (hover, overflow menu,
   popover) instead of showing them all at once. <!-- D17 -->
-- Make every aggregate clickable through to the rows behind it, so overview
-  leads to detail.
 
 ## Data states
 
-States on a dashboard follow the states rules in principles.md (P3, P18),
-applied per widget rather than to the whole page.
-
-- Render each widget's own loading, empty, and error state; one failed query
-  must not blank the whole screen.
-- Distinguish zero data (no rows exist yet) from a real zero value (a
-  measured zero); they mean different things.
-- Mark stale data explicitly when a widget cannot refresh.
+States apply per widget: each independently loading region is a view, so the
+empty, loading, and error rules from principles.md (P3, P18) run once per
+widget, not once per page.
 
 ## Chart choice basics
 
@@ -89,10 +79,10 @@ skill.
 - Prefer a purpose-fit visualization for the data (a map for geospatial, for
   example) over a default generic bar chart. <!-- D21 -->
 
-Chart styling, color encoding, and palette belong to the dataviz skill
-(available here), not this module. That skill owns keeping charts legible over
+If a dedicated dataviz skill is available, hand chart styling, color encoding,
+and palette to it; otherwise these apply here: keep charts legible over
 decorated, with visible axes and labels, proportional bars, and no 3D
-<!-- D10 -->, and using a small chart palette where color encodes category or
+<!-- D10 -->, and use a small chart palette where color encodes category or
 meaning and never decoration <!-- D20 -->.
 
 ## Density
