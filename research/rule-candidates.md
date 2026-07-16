@@ -96,7 +96,7 @@ note marks checks where a yes answer is the defect.
 
 | ID | Check (yes/no question) | Derived from | Severity |
 |----|--------------------------|--------------|----------|
-| C1 | Does every data-backed view implement empty, loading, and error states, not just the populated view? | P3, P18 | BLOCKER |
+| C1 | Does every data-backed view implement empty, loading, error, and partial-data states, not just the populated view? | P3, P18; partial-data extension from design spec states matrix | BLOCKER |
 | C2 | Does every user action produce visible feedback (pending or disabled state, spinner, toast, or confirmation)? | P4 | BLOCKER |
 | C3 | Are destructive actions guarded by an undo, cancel, or confirmation step? | P17 | BLOCKER |
 | C4 | Is state or category ever conveyed by color alone, with no text, icon, or shape backup? (flag if yes) | P14, D20 | BLOCKER |

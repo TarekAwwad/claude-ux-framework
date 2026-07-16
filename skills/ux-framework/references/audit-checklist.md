@@ -30,7 +30,7 @@ it with friction or confusion), MINOR (polish).
 
 ## Checks: states
 
-- C1 (BLOCKER): Does every data-backed view implement empty, loading, and error states, not just the populated view?
+- C1 (BLOCKER): Does every data-backed view implement empty, loading, error, and partial-data states, not just the populated view?
 - C2 (BLOCKER): Does every user action produce visible feedback (pending or disabled state, spinner, toast, or confirmation)?
 - C3 (BLOCKER): Are destructive actions guarded by an undo, cancel, or confirmation step?
 - C4 (BLOCKER): Is every state or category reinforced by text, icon, or shape rather than conveyed by color alone?
