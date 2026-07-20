@@ -54,9 +54,11 @@ returns prioritized findings scored by severity and effort.
 Then copy or link `skills/ux-framework/` into your skills directory:
 
     # PowerShell (junction, no admin needed)
+    New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
     New-Item -ItemType Junction -Path "$HOME\.claude\skills\ux-framework" -Target "<repo>\skills\ux-framework"
 
     # or just copy
+    mkdir -p ~/.claude/skills
     cp -r skills/ux-framework ~/.claude/skills/
 
 ## Scope
