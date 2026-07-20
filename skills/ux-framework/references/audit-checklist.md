@@ -13,7 +13,9 @@ it with friction or confusion), MINOR (polish).
    tasks and walk those).
 2. Prefer looking at the rendered UI: run the app, screenshot key screens
    and states. Fall back to reading templates/components when you cannot run
-   it.
+   it. Static screenshots cannot show scroll or motion: verify responsive
+   behavior (overflow, hidden columns, reduced-motion handling) in code or
+   by interacting, never from a screenshot alone.
 3. Answer every applicable check. Not-applicable is a valid answer; silence
    is not.
 4. Report using the format at the bottom.
