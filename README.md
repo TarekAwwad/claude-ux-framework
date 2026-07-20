@@ -9,28 +9,40 @@ color scheme) and bad at project-wide UX: information architecture, user
 goals, flows across screens, state handling, density decisions. This skill
 fixes that with an enforced process, not a rulebook.
 
-![Same prompt, built without and with the skill](docs/assets/hero-before-after.png)
+![Same prompt, data, and design tokens, without and with the skill](docs/assets/hero-before-after.png)
 
-## Same prompt, with and without
+## The test: same prompt, same data, same design tokens
 
-One dashboard prompt, two agents, one with the skill and one without. Both
-outputs were rendered headless and scored against the skill's audit
-checklist. Full method, findings, and caveats: [docs/validation.md](docs/validation.md).
+Two agents get byte-identical prompts, a pinned dataset both must
+hardcode verbatim, and a pinned design-token file both must style from.
+The only difference is that one agent is told to follow this skill. Both
+outputs are scored against the skill's 30-check audit checklist, by the
+supervising session, in code and by interaction. Because the palette,
+type, and spacing are fixed, the two builds look like the same product,
+and what differs is design judgment, which is the thing being measured.
+
+Latest run (the pair shown above, shipped in [examples/](examples/)):
 
 | | Blocker | Major | Minor |
 |---|---|---|---|
-| Without the skill | 1 | 2 | 4 |
+| Without the skill | 1 | 2 | 1 |
 | With the skill | 0 | 0 | 0 |
 
-The caveats, stated plainly: this is an n=1 smoke test, scored with the
-skill's own checklist, and both agents shared a chart-guidance skill, so
-chart-level wins are excluded from the delta.
+The deltas that persisted across every run of the test, not just this
+one: state handling (every baseline shipped zero empty, loading, error,
+or partial handling), table affordances (search, filter, sort),
+responsive containment (two of three baselines overflow the page at
+phone width), insight framing, and keyboard access. The reproducible
+suite, all run logs, retracted findings included, and the caveats are in
+[docs/validation.md](docs/validation.md).
 
-The widest gap was state handling. The baseline ships the happy path plus
-one empty message. The with-skill build implements empty, loading, error,
-partial, and ideal for every region of the screen:
+The blocker is the difference users hit first. The baseline renders the
+happy path and nothing else; the with-skill build's states are real code
+paths, captured without a demo switcher: skeletons when the page has not
+booted, guidance on a zero-result search, and a per-panel Retry when a
+render fault is injected. The rest of the dashboard keeps working:
 
-![Loading, empty, error, and partial states of the with-skill build](docs/assets/states-grid.png)
+![Loading, empty, and error states of the with-skill build, all real code paths](docs/assets/states-grid.png)
 
 Both builds, the UX spec the skill produced, and the capture script are in
 [examples/](examples/).
@@ -70,8 +82,9 @@ navigation and app shell. Forms and tables are planned as future modules.
 
 - `skills/ux-framework/` is the installable skill (self-contained)
 - `research/` holds the findings the rules were distilled from, with sources
-- `examples/` holds both smoke-test builds, the spec, and the screenshots
-- `docs/validation.md` records the with/without smoke test
+- `examples/` holds the published with/without pair, the spec, and the screenshots
+- `validation/` is the reproducible test suite (prompts, fixtures, checks, protocol)
+- `docs/validation.md` records the method, all runs, and their scorecards
 
 ## Contributing
 

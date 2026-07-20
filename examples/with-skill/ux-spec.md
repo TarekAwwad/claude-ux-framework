@@ -1,116 +1,169 @@
-# UX spec: Acme business overview dashboard
+# UX spec: Ledgerline morning health dashboard
+
+Single-page analytics dashboard, one self-contained HTML file, hardcoded
+fixture data (as of 2026-07-19).
 
 ## Context
 
-- Primary user: startup founder / CEO. Not a data analyst; comfortable
-  reading a P&L but not SQL. Expert in their own business, novice at the
-  tool. Uses it daily, so the layout can assume familiarity after day one
-  but must still be scannable cold (an investor update or a bad-news
-  morning shouldn't require re-learning the screen).
-- Usage context: ambient monitoring, first thing in the morning, coffee in
-  hand, 2-5 minutes, frequently interrupted (Slack, email). The user wants
-  a yes/no read on "is anything on fire" before they decide where to spend
-  the rest of the day. This is not a focused analytical session.
-- Device/viewport reality: primary device is a laptop (1366-1920px). The
-  founder persona also checks from a phone between meetings, so the layout
-  must reflow to a single column down to ~375px rather than assume
-  desktop-only.
+- Primary user: startup founder, business-literate but not an analyst,
+  checks it every morning in a minute or two.
+- Usage context: ambient monitoring ("is the business OK today?"), often
+  interrupted, usually a quick scan rather than deep analysis.
+- Device/viewport reality: laptop first (1280 to 1536px). Must stay usable
+  down to a narrow window (~360px) since founders open it on a phone over
+  coffee; no dedicated mobile design beyond stacking and scrollable tables.
 
-## Assumptions
+## Dashboard classification
 
-Recorded here per the "no questions, reasonable assumptions" instruction:
+Monitoring dashboard (per references/dashboards.md): status first, details
+on demand. One question: "is the business healthy this morning?"
 
-- Product/company name is invented as "Acme" (a generic, widely-recognized
-  placeholder name) to avoid implying this is a real company's live data.
-- Metric definitions: MRR = monthly recurring revenue; churn = monthly
-  logo/customer churn rate; active users = monthly active users (people
-  logging in, which can exceed paying-account count under per-seat
-  billing); ARPU = MRR / paying accounts, shown as supporting context
-  rather than a headline tile. All comparisons are "vs. last month" for
-  consistency, stated on every tile.
-- Business-health metrics (MRR, active users, churn) are monthly-cadence
-  by nature, so the trend range control offers 6 / 12 months rather than
-  day-granularity presets (7D/30D) that don't exist for this data.
-- All data is hardcoded fake data generated for this build; no backend
-  exists. Loading/error/empty/partial states are therefore simulated: the
-  page always plays a real ~700ms loading state on first paint, and a
-  small "Preview state" control (top-right, secondary/muted) lets a
-  reviewer switch any moment between Loading / Empty / Error / Partial /
-  Ideal to verify all five states actually render, since there is no
-  backend failure to trigger them naturally.
-- Independently-loading "views" are grouped at the section level (KPI
-  summary row / Trends / Feature adoption / Recent signups) rather than
-  one state machine per KPI tile. In a real product these would likely
-  share 2-3 aggregate endpoints anyway; five independent tile-level state
-  machines would add implementation weight without changing what the
-  founder sees or decides. This is a scale-down, not a skip, per hard rule
-  1, and is called out again in the self-audit.
-- Dark mode is supported automatically via `prefers-color-scheme` using
-  the dataviz skill's validated dark-mode steps; no manual theme toggle is
-  added since nothing else in the shell needs one.
+Widget sentences (D1/D2):
+
+- MRR tile + trend: tells the founder current revenue and momentum so they
+  can decide whether growth needs attention today.
+- Churn tile + trend: tells them whether retention is degrading so they can
+  decide to dig into churned accounts.
+- WAU tile + trend: tells them whether usage is growing so they can judge
+  product health, a leading indicator for revenue.
+- Feature adoption: tells them which features carry the product and which
+  are ignored so they can decide where to invest or intervene (SSO at 18%
+  and CSV export at 31% are the laggards).
+- Recent signups: tells them who just arrived and in what state (trial,
+  active, churned) so they can decide who to follow up with this morning.
+
+No metric in the fixture lacks a decision, so nothing is cut; everything in
+the data contract stays reachable.
 
 ## Tasks
 
-1. See at a glance whether the business is healthy right now (MRR, churn,
-   active users all trending the right way) - zero clicks, first thing in
-   the viewport.
-2. Spot a concerning trend or anomaly before it becomes a crisis (a churn
-   spike, MRR flattening against target) - one glance down, no click.
-3. See which features are actually landing with customers, to know what
-   to double down on or push in onboarding - one section down.
-4. Recognize who just signed up, to do founder-led outreach - searchable
-   table, bottom of the page.
-
-Task 1 dictates the layout: the KPI row is the first thing in the
-viewport, and MRR (the single number a founder is asked about most)
-carries visibly more weight than the other four tiles.
+1. Scan the three headline numbers (MRR, churn, WAU) with their deltas and
+   confirm nothing regressed. This dictates layout: KPI tier at top, MRR
+   dominant.
+2. Glance at the 13-month trends to confirm the direction of travel.
+3. Skim recent signups for new trials worth a follow-up and any churn.
+4. Occasionally check feature adoption for where to invest next.
 
 ## Placement in IA
 
-- Entry points: this is the app's home screen, shown immediately after
-  login. If the product grows a multi-page IA later (billing, customers,
-  settings), this stays what a top-level "Dashboard" nav item points to.
-- One level up: none - this is the root screen.
-- Onward paths: the trends filter scopes the three trend charts; a
-  feature bar or a signup row would open a detail view in a full product
-  (out of scope for this single-page build, so rows are not fake-linked
-  anywhere they'd dead-end).
+- Entry points: it is the whole app for this exercise; assumed to be the
+  landing page a founder bookmarks. No app shell or nav is built (single
+  page, single screen), so the navigation module was not routed in.
+- One level up: none (root).
+- Onward paths: none in scope. Row-level "open account" actions are out of
+  scope; the signups table is read-only.
 
 ## States matrix
 
-"View" here means the four independently-loading regions described in
-Assumptions. Every region implements all five states in the build; the
-"Preview state" control lets any of them be exercised without a backend.
+Data is hardcoded, so the page normally lands directly in Ideal. The other
+states are still implemented per widget (hard rule 2): the static HTML
+ships skeletons (what you see while JS boots or if it never runs), every
+renderer has guard paths for empty/partial input, and each widget render is
+wrapped in try/catch with a Retry action. The table's empty state is
+genuinely reachable via search/filter.
 
 | View | Empty (no data yet) | Loading | Error | Partial (some data) | Ideal |
 |------|---------------------|---------|-------|---------------------|-------|
-| KPI summary row (MRR, active users, churn, new signups, ARPU) | "No billing or usage data yet" message per tile with guidance to connect billing/product analytics; no fabricated zeros | Skeleton blocks matching tile shape (label bar + value bar + sparkline bar), no layout shift on resolve | Per-tile inline message "Couldn't load this metric" + icon + Retry button; other tiles unaffected | Value shown with delta replaced by "prior period unavailable" when the comparison point is missing | Value, signed delta vs last month (icon + color, never color alone), 12-point sparkline |
-| Trends (MRR / active users / churn charts) | "Not enough history yet - check back after your first full month" per chart | Skeleton chart silhouette (axis + faint bar/line shapes), range control disabled meanwhile | Inline error banner in the card + Retry; other two charts unaffected | Chart renders the months that exist and labels the cut-off ("showing 4 of 12 months") rather than guessing | Full line/bar chart, target baseline, tooltip + crosshair on hover/focus, "view as table" toggle |
-| Feature adoption | "No feature usage recorded yet" with guidance to wait for accounts to onboard | Skeleton horizontal bars at varying widths | Inline error + Retry inside the card | Renders only the features with data and notes any excluded for insufficient sample | Ranked horizontal bars, % labels, "view as table" toggle |
-| Recent signups table | "No signups yet in this range" with a suggestion to widen the range | Skeleton rows (5 placeholder rows) | Inline error banner above the table + Retry | Rows render with "-" in place of any field still enriching (e.g. plan not yet assigned), rest of row usable | Full sortable/filterable table; a separate, always-on empty-result state ("No signups match your search") covers the case where search/filter narrows to zero rows, independent of the demo state selector |
+| KPI tiles (x3) | "No data yet for this metric" note in the tile | skeleton blocks, same tile height, no layout jump | "Couldn't compute this metric" + Retry | value shown, delta omitted with "no prior month to compare" note | value + delta vs last month + vs a year ago |
+| Trend charts (x3) | "No history recorded yet" in the plot area | skeleton block at chart height | "Couldn't draw this chart" + Retry | plots the months that have values + "showing N of 13 months" note | 13-point line, area wash, endpoint label, crosshair tooltip, keyboard access |
+| Trends table (toggle view) | "No history recorded yet" row | covered by section skeleton | same try/catch + Retry as charts | renders available rows + note | 13 rows x MRR/churn/WAU |
+| Feature adoption | "No adoption data yet" | skeleton rows | "Couldn't load adoption" + Retry | renders the features present (list is the source of truth) | 7 labeled bars with values at the tip |
+| Recent signups table | No rows at all: "No signups recorded yet". No rows after filtering: "No signups match" + Clear filters button | skeleton rows | "Couldn't load signups" + Retry | renders the rows present; count line shows how many | 14 rows, 6 columns, search + status filter + sortable columns |
 
 ## Density & hierarchy decisions
 
-- The one thing the user must see first: the MRR value and whether it
-  moved up or down since last month. It is the largest element on the
-  screen and sits top-left.
-- At a glance vs on demand: KPI values, their deltas, and trend direction
-  are always visible with zero interaction. Exact tooltip values, full
-  12-month history, per-row table actions, and the empty/loading/error
-  state variants sit behind hover, focus, a toggle, or the range control.
-- What was deliberately left out: cohort retention curves, revenue-by-plan
-  breakdown, invoice/billing detail, a customer health score, and any
-  settings/admin surface. These serve a deeper analytical or operational
-  session, not a 2-5 minute morning read, and would dilute the one
-  question this screen answers ("is the business OK right now"). They
-  belong on dedicated analytics or customer-detail screens instead.
+- The one thing the user must see first: current MRR ($84,120) with its
+  month-over-month delta. It gets the largest number on the page (D4).
+- Headline KPIs: exactly 3 tiles (within the 5-to-7 cap, D5). Feature
+  adoption and signups are tiers below, not KPI tiles.
+- At a glance vs on demand: current values and deltas always visible;
+  exact monthly figures behind the chart tooltips and a Chart/Table toggle
+  (the table is the no-hover twin, so tooltips never gate data); signup
+  details in the table with search/filter/sort rather than any drill-down.
+- Tiering (D15): tier 1 KPI row, tier 2 the three 13-month trend charts,
+  tier 3 feature adoption + recent signups. Tier 1 and most of tier 2 fit
+  one laptop screen without scrolling (D19).
+- At the narrowest supported width: tiles and cards stack to one column;
+  the signups table keeps all six columns via horizontal scroll inside its
+  card (nothing silently dropped, P22); charts stay full-width.
+- What was deliberately left out: no date-range filter (fixed 13-month
+  fixture; a range control would imply data that does not exist), no
+  sparklines inside the KPI tiles (the full trend charts sit directly
+  below; duplicating them violates D3), no row actions, no export, no nav
+  chrome. Dark theme comes only from the provided prefers-color-scheme
+  token block, no manual toggle.
 
-## Dashboard classification (dashboards.md D1/D2)
+## Chart and encoding decisions (routed to dataviz skill)
 
-Monitoring dashboard: "is everything OK right now?" Status first (KPI row,
-big and binary-readable via color+icon delta), anomalies pop (the churn
-spike month and any red bar), details on demand (trend charts and the
-signups table sit below the fold as the "why" layer, not the "what"
-layer). Feature adoption and recent signups are the supporting detail a
-monitoring dashboard surfaces beneath its status row, not a second
-competing dashboard type.
+- MRR, churn, WAU histories: single-series line charts (job: trend over
+  time), 2px line in --chart-line, area wash in --chart-fill, >=8px
+  endpoint marker with a surface ring, hairline solid gridlines in
+  --border, no legend (single series; the card title names it), endpoint
+  direct-labeled only, y-axis with clean rounded ticks, one axis per chart
+  (never dual-axis; three small multiples instead).
+- Feature adoption: horizontal bars (job: ranked magnitude comparison,
+  long-ish category names), one hue for all bars (no value-ramp on nominal
+  categories), thin bars with rounded data-end, track in --chart-fill,
+  value at every bar tip (bars-get-tip-values rule), no pie/donut.
+- Hover layer: crosshair + tooltip on each line chart listing month and
+  value; bars and table need no crosshair. Keyboard: charts are focusable,
+  arrow keys move the readout, so hover and focus expose the same details.
+- Numbers: rounded to decision precision (D22): MRR in whole dollars,
+  churn one decimal, WAU whole; tabular-nums only in table columns and
+  ticks, proportional figures on the big tile values.
+
+## Assumptions
+
+- "Morning health check" means a monitoring dashboard; no editing actions
+  exist, so there is no destructive-action surface and no primary button
+  (the primary "action" is reading the MRR tile; C5 treated as N/A).
+- Delta basis: previous month for tiles (the natural morning question),
+  plus a year-ago comparison line for context (D6).
+- Churn down is good: its delta uses the --good token when it falls.
+- Status semantics: active = good, trial = warn (attention, convert them),
+  churned = bad. Chips always carry the text label, never color alone.
+- The fixture's signup order (newest first) is the default sort.
+- Radius: the token file defines a single --radius (10px); the dataviz 4px
+  data-end spec is overridden by the style contract, so bar ends and all
+  corners use --radius.
+- Font sizes and 1px hairline borders are not covered by any token, so a
+  small fixed type scale (12/13/14/18/20/28px) is used; every color, family,
+  radius, shadow, margin, padding, and gap comes from the token block.
+- No external icon library is allowed (self-contained file), so the UI uses
+  text labels throughout; sort direction uses the typographic triangles
+  U+25B2/U+25BC next to the column label, not emoji.
+- prefers-reduced-motion gates all transitions and the skeleton shimmer.
+
+## Self-audit (references/audit-checklist.md, run after build)
+
+Verified against rendered screenshots (light 1366px, dark, 390px) and
+scripted interaction (hover tooltip, keyboard arrows, table toggle, search
+to empty, clear filters, sort by MRR, status filter) via headless Chromium.
+
+Passing: C1, C2, C4, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16,
+C17, C18, C20, C22, C23, C24, C29, C30. Not applicable: C3 (no destructive
+actions), C25 to C28 (single page, no nav).
+
+Justified deviations, none fixed away silently:
+
+- C5: the screen is read-only monitoring; there is no action button by
+  design, so "exactly one primary action" is N/A. The one dominant element
+  is the MRR figure instead.
+- C19: adoption bars carry comparison across features (ranking) but no
+  target or delta, because the fixture has a single snapshot and inventing
+  a target would fabricate data.
+- C21: the trends table (the charts' no-hover twin) has no search or sort;
+  it is 13 fixed chronological rows where order is the meaning. The
+  signups table, the real worklist, has all three.
+- Dataviz deviations: adoption bar values sit in a right-aligned column
+  rather than at the bar tip (an 89% bar leaves no room outside the tip;
+  the label-fit rule sends them out), and bars have no hover tooltip since
+  every value is already directly labeled, so nothing is gated. KPI tiles
+  omit sparklines because full trend charts sit directly below (D3, no
+  duplication). Bar data-ends use the single token radius (10px) instead
+  of the dataviz 4px spec; the style contract wins.
+- One layout bug was found in render review and fixed: at 390px the
+  nowrap signups table propagated its min-content width through the grid
+  and forced page-level horizontal scroll; grid children now get
+  min-width: 0 and the page no longer overflows (the table scrolls inside
+  its own card).

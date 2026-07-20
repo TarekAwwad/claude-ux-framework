@@ -1,113 +1,112 @@
-# Validation: with/without smoke test
+# Validation: the with/without test
 
-Date: 2026-07-16. Same prompt, one subagent with the skill, one without.
+The skill's effect is measured by building the same dashboard twice, one
+agent with the skill and one without, and scoring both against the skill's
+30-check audit checklist. Since 2026-07-20 this runs under a reproducible
+suite ([../validation/](../validation/)): symmetric prompts whose only
+difference is the skill preamble, a pinned fixture dataset both builds
+must hardcode verbatim, a pinned design-token file both builds must style
+from (so comparisons stop being palette contests), an automated Playwright
+check script for the objectively verifiable subset, and a written protocol
+that records prompts and environment per run and forbids silent best-of-N
+selection.
 
-Both builds are single-page analytics dashboards (vanilla JS, inline CSS, fake
-data) for a B2B SaaS covering MRR, churn, active users, feature adoption, and
-recent signups. Each HTML file was rendered in headless Chrome via Playwright at
-1440x900 (desktop) and 375px (mobile), in light and dark, and every preview
-state on the with-skill build was driven and screenshotted. Code was read for
-the state-handling paths and semantics that rendering cannot show. Every
-applicable check in the audit checklist was answered for both files.
+The published example pair in [../examples/](../examples/) is run
+2026-07-20c, the strictest run to date. Full logs and scorecards for every
+run are in [validation-runs/](validation-runs/).
 
-The two builds, the filled spec, and the screenshots are in
-[examples/](../examples/).
+## Published pair: run 2026-07-20c
 
-## Checklist scores
+Same prompt, same persona, same data, same design tokens. The only
+difference between the two agents was the instruction to read and follow
+the skill.
 
-| Check group | Baseline failures | With-skill failures |
-|-------------|-------------------|---------------------|
-| Hierarchy and focus (C5-C6, C11, C13-C16) | C6 (MAJOR), C13 (MINOR) | none |
-| States (C1-C4, C10) | C1 (BLOCKER) | none |
-| Navigation and consistency (C7-C9, C12, C25-C28) | C12 (MINOR) | none |
-| Dashboards (C17-C24) | C21 (MAJOR), C23 (MINOR), C24 (MINOR) | none |
+| Build | Blocker | Major | Minor |
+|-------|---------|-------|-------|
+| Without the skill | 1 | 2 | 1 |
+| With the skill | 0 | 0 | 0 |
 
-Totals. Baseline: 1 BLOCKER, 2 MAJOR, 4 MINOR. With-skill: 0 / 0 / 0.
+The baseline's failures: zero state handling of any kind (the blocker), a
+static table with no search, sort, or filter, page-level horizontal
+overflow at phone width, and bare-label card titles. The with-skill build
+cleared all 30 checks; the same page-overflow bug the baseline shipped was
+caught and fixed by the with-skill agent's own render-and-verify pass.
 
-Checks answered not-applicable (applied equally to both): C3 (no destructive
-actions in either build), C5 (a read-first monitoring dashboard has no single
-primary-action button; the dominant element is the hero metric, covered by C6),
-and C25-C28 (single-page app, no cross-screen navigation to be consistent about).
+Because the styling is pinned, the judgment differences are directly
+visible in the side-by-side captures: insight titles ("MRR keeps
+compounding", "Recent signups: 5 open trials, 1 churned") versus bare
+labels, year-ago context on every KPI, a follow-up framing that turns the
+signups table into an action list, and working search, filters, and
+keyboard-accessible sorting.
 
-Where both pass and it matters: C2, C4, C7-C10, C17-C20, C22 pass on both.
-Chart-type fit (C20), the small semantic palette (C9), right-aligned numerics
-(C23), and no-pie/no-gauge all hold on both sides because both
-agents shared chart-level guidance (see the caveat below). C19 passes on both,
-but by different means: the baseline carries context through delta plus
-sparkline only, while the with-skill build adds explicit targets and benchmarks
-on top of that.
+## All runs
 
-## Observations
+| Run | Suite wording | Without | With | Notes |
+|-----|---------------|---------|------|-------|
+| 2026-07-16 (superseded) | ad hoc | 1 / 2 / 4 | 0 / 0 / 0 | asymmetric prompts, unpinned data; kept for history, method retired |
+| 2026-07-20 | v1 | 1 / 3 / 3 | 0 / 0 / 0 | first suite run, pinned data |
+| 2026-07-20b | v2 | 1 / 3 / 3 | 0 / 0 / 1 | reachability + theme pinned; with-skill dinged for an undeclared spacing scale |
+| 2026-07-20c | v4 | 1 / 2 / 1 | 0 / 0 / 0 | design tokens pinned; published pair |
 
-- Task ranking showed up in the layout. The with-skill spec ranks four tasks and
-  states that task 1 ("is the business healthy right now") dictates the layout,
-  so MRR is a hero tile: 44px value versus 26px, a 1.6fr column versus 1fr, and
-  an accent-tinted border. The baseline gives all four KPI tiles equal size and
-  weight, so nothing is visibly dominant and the eye lands nowhere in
-  particular. That is the C6 difference, and it is visible on first paint.
+Scores across rows are not strictly comparable (the prompt wording
+evolved between runs, and the token fixture in v4 pre-solves checks that
+v1 baselines could fail); within each row the comparison is same-day,
+same-prompt, same-environment.
 
-- States handling is the widest gap. The baseline ships the populated view plus
-  a single "No signups in this range" empty message, and nothing else: no
-  loading, error, or partial state anywhere, and no empty state for the KPI row,
-  the charts, or feature adoption. The with-skill build implements all five
-  states across all four regions and exposes them through a labeled "Preview
-  state" control. Loading renders shape-matched skeletons, empty and error show
-  an icon plus guidance plus a Retry button, and partial degrades honestly with
-  "prior period unavailable" on the deltas, "showing 5 of 12 months" on the
-  charts, and dashed placeholder cells in the table. This is the C1 blocker the
-  baseline fails and the with-skill build clears cleanly.
+## What persists across every run
 
-- Hierarchy and consistency beyond the hero. The with-skill build draws spacing
-  and radii from a token scale (--sp-1 through --sp-6, --radius, --radius-pill)
-  and separates sections with visibly more space than it uses inside a card. The
-  baseline uses one-off pixel values (7/9/12px radii, 14/16/18/20/22px spacing)
-  with section gaps no larger than the gaps between cards in a row, which is the
-  C12 and C13 miss. Card titles differ the same way: the with-skill build frames
-  each card as the insight it answers ("Churn rate vs 3.0% target", "Active
-  users trend, +5.2% this month", "Low adopters are onboarding-nudge
-  candidates"), while the baseline uses bare labels ("Churn rate trend"). That is
-  C24.
+The baseline improved run over run (later baselines picked up
+focus-visible styling, and the token fixture gave them spacing
+discipline for free). Five deltas survived every run regardless of prompt
+wording or style constraints:
 
-- The signups data table is a clean C21/C23 split. The with-skill table has a
-  company search, plan and status filters, sortable columns, plan and status
-  shown as chips, and its own zero-result state with a "Clear filters" button
-  (verified by searching a string that matches nothing). The baseline signups
-  table is static: no search, no filter, no sort, and plan rendered as plain
-  text rather than a chip.
+1. State handling: every baseline shipped zero empty, loading, error, or
+   partial handling; every with-skill build implemented all of them.
+2. Table affordances: no baseline table had search, filter, and working
+   sort together; every with-skill table did.
+3. Responsive containment: two of three baselines shipped page-level
+   horizontal overflow at phone width; every with-skill build contained
+   scrolling (in run c, after its own verification pass caught and fixed
+   exactly that bug).
+4. Insight framing: baselines title cards with field names; with-skill
+   builds title them with the finding and carry context (targets,
+   year-ago comparisons) on every number.
+5. Keyboard access: baseline interactions leaned mouse-only where they
+   existed at all; with-skill builds kept controls focusable and
+   keyboard-operable with visible focus states.
 
-- What the skill did not fully harden, as a candidate fix. The churn bar chart
-  still leans on red versus green to signal over or under target. Position
-  relative to the dashed target line plus per-bar value labels carry the meaning
-  for a colorblind reader, so it passes C4, but this is the one spot where a
-  non-color marker (a hatch or an over-target dot) would make the good/bad read
-  independent of hue. It is a small polish, not a failure. Nothing else in the
-  with-skill build reads as an unaddressed gap.
+## Method notes and honesty items
 
-- The spec artifact is filled meaningfully, not boilerplate. ux-spec.md records
-  the persona and the 2-to-5-minute morning usage context, ranks the four tasks,
-  states the MRR-hero decision explicitly, lists what was deliberately left out,
-  and carries a four-view by five-state matrix that the build actually
-  implements. It reads as evidence the skill drove a process, not a template
-  filled after the fact.
+- Scored with the skill's own checklist, by the supervising session
+  rather than the build agents' self-audits; self-audit claims were
+  verified in code and by interaction. Two of the reviewer's own
+  provisional findings were reversed by code evidence during run b
+  scoring and are recorded in that scorecard.
+- The original 2026-07-16 comparison had method flaws the suite now
+  prevents: the persona appeared only in the with-skill prompt, data was
+  unpinned (the two builds did not even show the same elements), prompts
+  went unrecorded, and one screenshot-based finding (mobile column loss)
+  was retracted after code inspection showed a scrollable table.
+  Screenshots are no longer scoring evidence for responsive or motion
+  behavior.
+- Baseline agents repeatedly inferred from the output path that they were
+  the control arm and skipped optional session skills on their own; run
+  logs record this. A neutral path name is a candidate improvement.
+- Both agents in all runs had the same session skill inventory available
+  (including a dataviz skill); only the ux-framework instruction
+  differed. In v4 runs the token fixture supplies the palette, so
+  chart-level styling is shared by construction.
+- An earlier version of the prompt named "one chart with a series
+  switcher" as an example of allowed consolidation, and the next baseline
+  built exactly that pattern; the example was removed (suite commit
+  f27f768) because permissive examples steer layout.
 
-- Dataviz caveat (stated for honesty, keeps the comparison conservative). The
-  baseline agent also had a session dataviz skill giving chart-level guidance, so
-  both sides shared the same chart know-how. That is why chart-type fit, the
-  color palette, right-aligned numerics, and the no-pie rule pass on both. The
-  delta measured here is the ux-framework layer specifically: state coverage,
-  task-driven hierarchy, table affordances, spacing tokens, insight-framed
-  titles, and chips. Because the easy chart wins are shared, this understates
-  rather than inflates the skill's effect.
+## Reproducing
 
-## Verdict
-
-Ship.
-
-The bar from the plan was to iterate only if the with-skill version fails more
-than 2 MAJOR checks that the skill explicitly covers. It fails zero MAJOR checks
-(and zero of any severity). The skill closed exactly the gaps it targets: on the
-same prompt it took the build from 1 blocker, 2 major, and 4 minor failures down
-to none, with the largest movement on state coverage (C1) and task-driven
-hierarchy (C6), the two things the framework is most centrally about. The one
-remaining polish (a non-color cue on the churn bars) is minor and does not
-warrant a skill edit before shipping.
+Follow [../validation/protocol.md](../validation/protocol.md): compose
+the two prompts from validation/prompts/, run one fresh agent per side,
+score with validation/checks.js plus the manual checklist, and record
+everything in a run log. The states in the published with-skill build are
+real code paths, not a demo switcher; examples/shots.js documents how
+each is captured honestly (JavaScript disabled for skeletons, a
+zero-result search for empty, an injected render fault for error).
