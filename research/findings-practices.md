@@ -4,7 +4,7 @@ Date: 2026-07-16. Produced by a web-research subagent; sources cited inline.
 
 ## 1. Kole Jain (YouTube channel)
 
-Kole Jain is a Canadian web/UI-UX designer and educator (channel: youtube.com/@KoleJain, personal site kolejain.com). Direct transcript fetching from YouTube itself failed (YouTube serves a JS-rendered shell to fetch tools), so the material below comes from third-party transcript summaries hosted on sozai.app (an AI transcription/note-taking service that publishes per-video transcript-and-summary pages). Each principle below is sourced to the specific sozai.app transcript page for a named video, with the underlying YouTube video linked for reference. These are AI-generated summaries of his spoken content, not his own written words. Everything below is therefore paraphrase of the ideas, in our wording; nothing is presented as a verbatim quote, because we could not verify the summaries against the original spoken transcript.
+Kole Jain is a Canadian web/UI-UX designer and educator (channel: youtube.com/@KoleJain, personal site kolejain.com). Direct transcript fetching from YouTube itself failed (YouTube serves a JS-rendered shell to fetch tools), so the material below comes from third-party transcript summaries hosted on sozai.app (an AI transcription/note-taking service that publishes per-video transcript-and-summary pages). Each principle below is sourced to the specific sozai.app transcript page for a named video, with the underlying YouTube video linked for reference. These are AI-generated summaries of his spoken content, not his own written words. Everything below is paraphrase of the ideas, in our wording, with one exception: phrases in quotation marks were verified by a human against the named videos on 2026-07-20 and are verbatim.
 
 **Video: "The 3 dashboard UI flaws that give away you've NEVER built one"**
 Source: https://sozai.app/transcript/dashboard-ui-flaws-never-built-one/ (video: https://www.youtube.com/watch?v=Ksx9C2-3yMo)
@@ -19,7 +19,7 @@ Source: https://sozai.app/transcript/dashboard-ui-flaws-never-built-one/ (video:
 **Video: "EVERYTHING you need to know to build a Dashboard UI in 8 minutes"**
 Source: https://sozai.app/transcript/build-dashboard-ui-beginner-guide/ (video: https://www.youtube.com/watch?v=B7k5rOgmOGY)
 
-- Treat the sidebar as the structural spine of the product: navigation, profile, and search live there; order links by how often they're used, and push rarely-used items like settings to the bottom.
+- Treat the sidebar as "the spine of the product": navigation, profile, and search live there; order links by how often they're used, and push rarely-used items like settings to the bottom.
 - Use a simple two-column, two-row grid for the main dashboard area; reserve the top region for the page's primary actions.
 - The main content area should reflect what the user actually cares about (project status for a PM tool, positions for a finance tool), not a generic layout.
 - Dashboards need tighter grid discipline and smaller type/spacing scales than marketing pages, because they must fit far more onto one screen.
@@ -40,7 +40,7 @@ Source: https://sozai.app/transcript/ui-ux-mistakes-beginner/ (video: https://ww
 - Use one consistent icon library throughout (mixed stroke widths/styles across icons is a giveaway), and label or add tooltips to any icon whose meaning isn't obvious.
 - Remove redundant UI that duplicates a function the interaction already provides (e.g., arrows next to a swipeable carousel).
 - Give every user action visible feedback: disable/gray out buttons while processing, show spinners for delays, fill/confirm icons on save, and use badges to confirm state changes. Silent state transitions feel broken.
-- Bonus mistake: over-designed charts. Prioritize legibility over decoration; keep axes visible and bars proportional; less visual noise makes a better design.
+- Bonus mistake: over-designed charts. Prioritize legibility over decoration; keep axes visible and bars proportional. "Less visual noise equals a better design."
 
 **Video: "Why the 60-30-10 Rule is RUINING Your UI Designs"**
 Source: https://sozai.app/transcript/60-30-10-rule-ruining-ui-designs/ (video: https://www.youtube.com/watch?v=66oOi9OLMCw)
@@ -53,9 +53,9 @@ Source: https://sozai.app/transcript/60-30-10-rule-ruining-ui-designs/ (video: h
 - Weight buttons by importance: primary actions should be the darkest/highest-contrast; low-priority buttons should sit close to the neutral background (he cites roughly 90-95 percent neutral).
 
 **Video: "Stop Making Pretty UIs. Think Like a Product Designer"**
-Source: https://sozai.app/transcript/stop-making-pretty-uis-think-product-designer/ (video: https://www.youtube.com/watch?v=HE4rLEQpiXY, per channel listing)
+Source: https://sozai.app/transcript/stop-making-pretty-uis-think-product-designer/ (YouTube link unresolved: the video ID originally listed here turned out to belong to "How to think like a GENIUS UI/UX designer"; locate this one via the channel listing at youtube.com/@KoleJain)
 
-- His framing (paraphrased): UI design is decorating a single room, product design is the whole house, meaning the flow, the function, and how it all connects. Design the system, not the screen.
+- His framing per the summary (unverified paraphrase; a human review on 2026-07-20 could not locate this passage): UI design is decorating a single room, product design is the whole house, meaning the flow, the function, and how it all connects. Design the system, not the screen.
 - Explicitly design every state a user can land in, not just the happy path: empty states with guidance, loading indicators, success confirmations, and error messages that don't leave the user guessing.
 - Design for sequences of screens, not isolated screens: think about how a user arrives at a step and what small decision naturally follows (his example: prompt to add teammates right after workspace creation).
 - Consistency across spacing, typography, color, and components is what makes new screens feel instantly familiar; it does not require hundreds of components, just decisions you actually stick to.
@@ -76,8 +76,8 @@ Source: https://sozai.app/transcript/saas-ui-ux-mistakes-vibe-code/ (video: http
 This video is explicitly about AI/"vibe-coded" app output, so it is the single most directly relevant Kole Jain source for a code-generating agent.
 
 - Drop emojis as UI iconography in professional products; use a real icon library (he names Phosphor, Lucide).
-- Don't let an AI pick your colors unreviewed: AI-generated palettes trend toward oversaturated, clashing color choices.
-- Don't let an AI pick your layout unreviewed either: AI-generated layouts tend to repeat the same KPI three times and default to generic gradient-circle avatars instead of functional account cards, i.e., pattern-matched decoration over purpose-built UI.
+- "Never let an AI choose any of your colors": AI-generated palettes trend toward oversaturated, clashing color choices.
+- "Never let an AI choose your layout either": AI-generated layouts tend to repeat the same KPI three times and default to generic gradient-circle avatars instead of functional account cards, i.e., pattern-matched decoration over purpose-built UI.
 - Replace repetitive/duplicate KPI displays with real data visualizations and micro-charts.
 - Consolidate navigation: collapse secondary links into popovers, and combine settings/billing instead of spreading them across many top-level entries.
 - Simplify cards: collapse multiple buttons into a single triple-dot overflow menu; use icons instead of text chips where space is tight.
@@ -245,7 +245,7 @@ Combines NN/g sources already cited above plus general IA framing.
 ## Sources I could not verify
 
 - A statistic attributed to "a 2025 Nielsen Norman Group analysis of 50 AI-generated dashboards" (92 percent missing empty states, 78 percent missing error states, 100 percent using a generic spinner) circulates on at least one third-party blog (blog.vibecoder.me) and is echoed in search-engine AI summaries, but I could not find this study on nngroup.com itself, nor any other primary citation for it. The blog post that states it provides no source link. I am treating this figure as unverified and possibly fabricated, and have not used it as a cited NN/g finding above.
-- Kole Jain's content: I could not fetch YouTube video pages or captions directly (YouTube serves a non-content shell to the fetch tool, and a third-party transcript site returned 403). All Kole Jain material above is sourced to sozai.app's AI-generated transcript-and-summary pages for specific named videos, not to Kole Jain's own written words or to YouTube directly. I was not able to verify these summaries against the original spoken transcript.
+- Kole Jain's content: I could not fetch YouTube video pages or captions directly (YouTube serves a non-content shell to the fetch tool, and a third-party transcript site returned 403). All Kole Jain material above is sourced to sozai.app's AI-generated transcript-and-summary pages for specific named videos, not to Kole Jain's own written words or to YouTube directly. Update 2026-07-20: a human review of the videos confirmed the four phrases now shown in quotation marks ("Never let an AI choose any of your colors", "Never let an AI choose your layout either", "Less visual noise equals a better design", "the spine of the product"). The room-and-house framing could not be located and remains unverified paraphrase, and the video ID originally listed for "Stop Making Pretty UIs" actually belonged to "How to think like a GENIUS UI/UX designer" and has been corrected. The rest of the summaries remain unverified paraphrase.
 - Stephen Few's "13 mistakes" list: the primary source PDF (perceptualedge.com whitepaper) could not be parsed as readable text by the fetch tool; the list above comes from a third-party (Medium) summary of the same material, not Few's original wording.
 - Refactoring UI: no official free full text exists; the points above are concept-level paraphrase gathered from secondary coverage of the book, not verified against the book's own text.
 
