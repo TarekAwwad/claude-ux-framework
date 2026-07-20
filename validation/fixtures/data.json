@@ -1,0 +1,34 @@
+{
+  "product": "Ledgerline",
+  "description": "Fictional B2B SaaS (invoicing automation). All values are fake and fixed; both test builds must hardcode them verbatim.",
+  "as_of": "2026-07-19",
+  "months": ["2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"],
+  "mrr_usd": [62400, 64100, 65800, 67900, 69400, 71600, 73200, 75100, 77400, 79000, 80900, 82600, 84120],
+  "churn_pct": [3.4, 3.2, 3.3, 3.0, 2.9, 2.7, 2.8, 2.5, 2.4, 2.2, 2.1, 2.0, 1.8],
+  "weekly_active_users": [890, 910, 946, 972, 1004, 1035, 1061, 1090, 1122, 1158, 1189, 1233, 1284],
+  "feature_adoption_pct": [
+    { "feature": "Automations", "pct": 89 },
+    { "feature": "Shared inboxes", "pct": 83 },
+    { "feature": "API access", "pct": 72 },
+    { "feature": "Reporting", "pct": 60 },
+    { "feature": "Slack sync", "pct": 51 },
+    { "feature": "CSV export", "pct": 31 },
+    { "feature": "SSO / SAML", "pct": 18 }
+  ],
+  "recent_signups": [
+    { "company": "Quill Analytics", "plan": "Growth", "seats": 18, "mrr_usd": 882, "signed_up": "2026-07-19", "status": "trial" },
+    { "company": "Copperline HVAC", "plan": "Starter", "seats": 4, "mrr_usd": 116, "signed_up": "2026-07-19", "status": "active" },
+    { "company": "Marrow Bio", "plan": "Scale", "seats": 34, "mrr_usd": 2686, "signed_up": "2026-07-18", "status": "trial" },
+    { "company": "Pinebox Studio", "plan": "Starter", "seats": 6, "mrr_usd": 174, "signed_up": "2026-07-17", "status": "active" },
+    { "company": "Atlas Cargo", "plan": "Growth", "seats": 22, "mrr_usd": 1078, "signed_up": "2026-07-16", "status": "active" },
+    { "company": "Verity Audit", "plan": "Growth", "seats": 11, "mrr_usd": 539, "signed_up": "2026-07-14", "status": "trial" },
+    { "company": "Harbor & Lane", "plan": "Starter", "seats": 3, "mrr_usd": 87, "signed_up": "2026-07-12", "status": "churned" },
+    { "company": "Oakfield Schools", "plan": "Scale", "seats": 40, "mrr_usd": 3160, "signed_up": "2026-07-10", "status": "active" },
+    { "company": "Fernworks", "plan": "Starter", "seats": 5, "mrr_usd": 145, "signed_up": "2026-07-08", "status": "trial" },
+    { "company": "Sundial Travel", "plan": "Growth", "seats": 14, "mrr_usd": 686, "signed_up": "2026-07-05", "status": "active" },
+    { "company": "Rove Logistics", "plan": "Growth", "seats": 19, "mrr_usd": 931, "signed_up": "2026-07-02", "status": "active" },
+    { "company": "Meridian Clinics", "plan": "Scale", "seats": 27, "mrr_usd": 2133, "signed_up": "2026-06-28", "status": "active" },
+    { "company": "Tessel Print", "plan": "Starter", "seats": 2, "mrr_usd": 58, "signed_up": "2026-06-25", "status": "trial" },
+    { "company": "Bluestem Farms", "plan": "Starter", "seats": 7, "mrr_usd": 203, "signed_up": "2026-06-22", "status": "active" }
+  ]
+}
