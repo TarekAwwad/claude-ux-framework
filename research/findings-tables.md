@@ -113,7 +113,7 @@ Source: https://www.ag-grid.com/javascript-data-grid/dom-virtualisation/
 - Only the rows and columns inside the visible viewport are actually rendered as DOM nodes; the grid adds and removes nodes as the user scrolls, so loading 1,000 rows and 20 columns but only ever showing 50 rows and 10 columns means only those 50x10 cells exist in the DOM at once.
 - Row buffer defaults to 10 rows rendered above and 10 below the visible area (rowBuffer, default 10), purely so a fast scroll on a slow machine doesn't flash blank space. Setting rowBuffer=0 removes the buffer but leaves virtualization itself on.
 - A safety cap renders at most 500 rows at once by default, specifically to stop a misconfigured app from crashing the page; suppressMaxRenderedRowRestriction lifts that cap.
-- Column virtualization has no equivalent buffer: "no column buffer, no additional columns are rendered apart from the visible set" (quoted), because keeping up with horizontal scroll is cheaper than vertical.
+- Column virtualization has no equivalent buffer: no additional columns are rendered apart from the visible set (paraphrase; the page states there is no column buffer), because keeping up with horizontal scroll is cheaper than vertical.
 - suppressRowVirtualisation and suppressColumnVirtualisation turn each off independently. Turning virtualization off means value formatters run continuously during scroll instead of once at initial render.
 
 ### Row Pagination
