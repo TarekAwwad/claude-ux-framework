@@ -1,0 +1,52 @@
+/* Ledgerline design tokens. Fixture for the with/without validation runs:
+   both builds must inline this block verbatim and build strictly from it.
+   Light is the default; the dark block activates via prefers-color-scheme. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --text: #1a2233;
+  --text-2: #55617a;
+  --text-3: #8a94ab;
+  --border: #e3e7ee;
+  --accent: #2f6bff;
+  --accent-strong: #1f4fd6;
+  --good: #17805c;
+  --good-bg: #e3f4ec;
+  --bad: #c2372e;
+  --bad-bg: #fbe9e7;
+  --warn: #9a6a00;
+  --warn-bg: #fff3d6;
+  --chart-line: #2f6bff;
+  --chart-fill: rgba(47, 107, 255, 0.10);
+  --font: system-ui, "Segoe UI", Roboto, sans-serif;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  /* spacing scale: draw every margin, padding, and gap from these steps */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11151d;
+    --surface: #1a2029;
+    --text: #e8ecf4;
+    --text-2: #a7b0c3;
+    --text-3: #707a90;
+    --border: #2a3140;
+    --accent: #6b96ff;
+    --accent-strong: #8fadff;
+    --good: #4cc394;
+    --good-bg: #14322a;
+    --bad: #ef8a7f;
+    --bad-bg: #3a1f1c;
+    --warn: #d9b25e;
+    --warn-bg: #35290f;
+    --chart-line: #6b96ff;
+    --chart-fill: rgba(107, 150, 255, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+}

@@ -37,6 +37,18 @@ async function checkBuild(browser, dirArg) {
   add('DATA-series', missingSeries.length === 0,
     missingSeries.length ? 'probe values absent: ' + missingSeries.join(', ') : 'history series values present');
 
+  // Style contract (suite v4+): tokens inlined verbatim, no foreign colors.
+  const tokensSrc = fs.readFileSync(path.join(__dirname, 'fixtures', 'tokens.css'), 'utf8');
+  const tokenHexes = new Set((tokensSrc.match(/#[0-9a-fA-F]{3,8}\b/g) || []).map(h => h.toLowerCase()));
+  const tokenProbe = ['--accent: #2f6bff', '--s5: 24px', '--font: system-ui'];
+  const missingTokens = tokenProbe.filter(t => !src.includes(t));
+  add('STYLE-tokens-inlined', missingTokens.length === 0,
+    missingTokens.length ? 'token probe(s) absent: ' + missingTokens.join(' | ') : 'token block present verbatim (probed)');
+  const offenders = [...new Set((src.match(/#[0-9a-fA-F]{3,8}\b/g) || []).map(h => h.toLowerCase()))]
+    .filter(h => !tokenHexes.has(h));
+  add('STYLE-no-foreign-colors', offenders.length === 0,
+    offenders.length ? 'non-token hex literals: ' + offenders.slice(0, 8).join(' ') + ' (review manually; rgba() variants of tokens also need eyes)' : 'every hex literal is a token value');
+
   add('A11Y-focus-visible', /focus-visible/.test(src), 'focus-visible styling in CSS');
 
   const animates = /@keyframes|transition\s*:/.test(src);

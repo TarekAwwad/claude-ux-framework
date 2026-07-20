@@ -15,10 +15,16 @@ the prompts were not recorded, and scoring leaned on static screenshots
    prompts/common-body.md. The with-skill agent additionally gets the
    preamble in prompts/with-skill.md. That preamble is the entire
    experimental variable.
-2. Pinned data. fixtures/data.json is the single source of data. Both
-   builds must hardcode it verbatim, and the automated checks verify they
-   did. Same elements, same numbers: every visible difference is then a
-   design decision, not a data accident.
+2. Pinned data and style. fixtures/data.json is the single source of data
+   and fixtures/tokens.css the single source of visual style (palette,
+   font, radius, shadow, spacing scale). Both builds must hardcode the
+   data and inline the tokens verbatim, and the automated checks verify
+   both. Same elements, same numbers, same tokens: every visible
+   difference is then a design judgment, not a data or palette accident.
+   What stays free is everything the skill claims to move: layout,
+   hierarchy, emphasis, states, density, table affordances, and where the
+   semantic tokens get applied. Accepted trade-off: palette selection
+   discipline is no longer observable, since the palette is supplied.
 3. Fresh, isolated agents. One new subagent per side, launched in the same
    session, neither seeing the other's output. The prompt forbids reading
    repo files beyond the fixture (plus the skill files, with-skill side
