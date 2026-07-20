@@ -28,6 +28,7 @@ Apply to every UI. Ordered by how often agents get them wrong.
 ## Density and disclosure
 
 - Make spacing between groups visibly larger than spacing within a group so grouping reads without borders. Check: related items sit closer to each other than to the next group. <!-- P8 -->
+- When a narrow viewport forces a table or grid to shed columns, keep the fields that answer the user's top task (status, the key metric) and move the rest into stacked rows, expandable detail, or horizontal scroll; never drop them silently. Check: at the narrowest supported width, every row still answers the user's top question. <!-- P22 -->
 - Remove anything that does not serve the primary task; every extra element competes with the important ones. <!-- P16 -->
 - Keep shadows, gradients, and glows subtle, and never use `transition: all`. <!-- P15 -->
 - Constrain paragraph and text-column width to roughly 45 to 75 characters. <!-- P19 -->
@@ -43,3 +44,4 @@ Apply to every UI. Ordered by how often agents get them wrong.
 
 - Never use color as the sole signal of state or category; reinforce it with text, icon, or shape. Check: the UI still reads correctly in grayscale. <!-- P14 -->
 - Give every interactive element a visible keyboard focus state (focus-visible), not just a hover style. Check: tabbing through the page shows a clear focus indicator on each control. <!-- P21 -->
+- Gate non-essential animation (transitions, chart draw-ins, skeleton shimmer) behind `prefers-reduced-motion`. Check: with reduced motion set, the UI still communicates every state without animating. <!-- P23 -->

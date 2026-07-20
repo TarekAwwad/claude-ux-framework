@@ -40,4 +40,7 @@ region, not just the page.
 - The one thing the user must see first: <metric, status, item>
 - At a glance vs on demand: <what is always visible; what sits behind a
   click, hover, or expand>
+- At the narrowest supported width, what survives: <which fields each table
+  or grid keeps, and where the rest go: stacked rows, expandable detail, or
+  horizontal scroll>
 - What was deliberately left out: <features/data excluded and why>

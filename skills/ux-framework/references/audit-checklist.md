@@ -27,6 +27,7 @@ it with friction or confusion), MINOR (polish).
 - C14 (MINOR): Is text limited to two or three colors with legible weight (no sub-400 body, no illegible gray)?
 - C15 (MINOR): Are decorative effects (shadows, gradients, glows, `transition: all`) kept subtle or absent?
 - C16 (MINOR): Is paragraph or text-column width constrained to roughly 45 to 75 characters?
+- C29 (MAJOR): At the narrowest supported width, does every table or grid preserve the fields that answer the user's top task (status, key metric) via stacked rows, expandable detail, or horizontal scroll, rather than silently dropping columns?
 
 ## Checks: states
 
@@ -35,6 +36,7 @@ it with friction or confusion), MINOR (polish).
 - C3 (BLOCKER): Are destructive actions guarded by an undo, cancel, or confirmation step?
 - C4 (BLOCKER): Is every state or category reinforced by text, icon, or shape rather than conveyed by color alone?
 - C10 (MAJOR): Do interactive elements have a visible keyboard focus state?
+- C30 (MINOR): Is non-essential animation (transitions, chart draw-ins, skeleton shimmer) gated behind `prefers-reduced-motion`?
 
 ## Checks: navigation and consistency
 

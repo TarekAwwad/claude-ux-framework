@@ -42,6 +42,8 @@ itself, not an external citation.
 | P19 | Constrain paragraph and text-column width to roughly 45 to 75 characters. | Refactoring UI (paraphrase) | yes: agents let text lines span the full viewport width |
 | P20 | Reserve modals for focused multi-field tasks; use popovers or inline UI for lightweight, non-blocking interactions. | Kole Jain build-dashboard (sozai); Kole Jain vibe-code (sozai) | yes: agents overuse modals for trivial actions or cram dense forms into popovers |
 | P21 | Give every interactive element a visible keyboard focus state (focus-visible), not just a hover style. | known failure mode | yes: agents style hover only, or strip the default outline |
+| P22 | When a narrow viewport forces a table or grid to shed columns, keep the fields that answer the user's top task and relocate the rest (stacked rows, expandable detail, horizontal scroll); never drop them silently. | observed failure in validation smoke test, 2026-07-20: the with-skill build dropped MRR and status from the signups table at 375px | yes: observed even with the skill loaded |
+| P23 | Gate non-essential animation behind `prefers-reduced-motion`. | observed failure in validation smoke test, 2026-07-20: the with-skill build shipped no reduced-motion handling (the baseline did) | yes: observed even with the skill loaded |
 
 ## D: Dashboards (target: references/dashboards.md)
 
