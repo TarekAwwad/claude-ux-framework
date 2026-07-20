@@ -10,6 +10,9 @@ state on the with-skill build was driven and screenshotted. Code was read for
 the state-handling paths and semantics that rendering cannot show. Every
 applicable check in the audit checklist was answered for both files.
 
+The two builds, the filled spec, and the screenshots are in
+[examples/](../examples/).
+
 ## Checklist scores
 
 | Check group | Baseline failures | With-skill failures |
