@@ -19,8 +19,8 @@ scroll; never only in source or comments): (1) MRR and its 13-month
 history; (2) monthly churn rate and its history; (3) weekly active users
 and its history; (4) the feature adoption percentages for all 7 listed
 features; (5) the recent signups list, with all six fields for all 14
-rows. Consolidating views (for example one chart with a series switcher)
-is allowed as long as everything stays reachable.
+rows. You may combine or separate views however you judge best, as long
+as everything stays reachable.
 
 Theme: default to a light theme. A dark theme is optional; if you build
 one, honor prefers-color-scheme.
