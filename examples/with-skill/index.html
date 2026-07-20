@@ -1,0 +1,1190 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme — Business overview</title>
+<style>
+  :root{
+    color-scheme: light;
+    --surface: #fcfcfb;
+    --page: #f9f9f7;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --ink-3: #898781;
+    --border: rgba(11,11,11,0.10);
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --accent: #2a78d6;
+    --accent-2: #1baf7a;
+    --delta-good: #006300;
+    --delta-bad: #d03b3b;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+    --seq-250: #86b6ef;
+    --seq-350: #5598e7;
+    --seq-450: #2a78d6;
+    --seq-550: #1c5cab;
+    --seq-600: #184f95;
+    --seq-650: #104281;
+    --seq-700: #0d366b;
+
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px;
+    --radius: 10px;
+    --radius-pill: 999px;
+    --shadow-card: 0 1px 2px rgba(11,11,11,0.05);
+    font-synthesis: none;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])){
+      color-scheme: dark;
+      --surface: #1a1a19;
+      --page: #0d0d0d;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --ink-3: #898781;
+      --border: rgba(255,255,255,0.10);
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --accent: #3987e5;
+      --accent-2: #199e70;
+      --delta-good: #0ca30c;
+      --delta-bad: #e66767;
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.4);
+    }
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,p{ margin:0; }
+  button, select, input{ font-family: inherit; font-size: inherit; color: inherit; }
+  svg{ display:block; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .icon{ width:16px; height:16px; stroke: currentColor; stroke-width:1.75; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+  .icon-sm{ width:14px; height:14px; }
+  .icon-lg{ width:20px; height:20px; }
+  .icon-spin{ animation: spin 0.9s linear infinite; }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .wrap{ max-width: 1280px; margin: 0 auto; padding: var(--sp-5) var(--sp-5) var(--sp-6); }
+  @media (max-width: 640px){ .wrap{ padding: var(--sp-4); } }
+
+  /* ---------- Header ---------- */
+  .page-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-5);
+    flex-wrap: wrap;
+  }
+  .brand{ display:flex; align-items:center; gap: var(--sp-3); }
+  .brand-mark{
+    width:34px; height:34px; border-radius: var(--radius);
+    background: var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:15px;
+  }
+  .brand h1{ font-size:17px; font-weight:600; }
+  .brand p{ font-size:12.5px; color: var(--ink-3); margin-top:1px; }
+
+  .head-controls{ display:flex; align-items:center; gap: var(--sp-4); }
+  .updated-note{ font-size:12px; color: var(--ink-3); white-space:nowrap; }
+  .preview-state{
+    display:flex; align-items:center; gap: var(--sp-2);
+    font-size:12px; color: var(--ink-3);
+  }
+  .preview-state select{
+    background: var(--surface); color: var(--ink-2);
+    border:1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-1) var(--sp-2); cursor:pointer;
+  }
+
+  section{ margin-bottom: var(--sp-6); }
+  .section-head{ display:flex; justify-content:space-between; align-items:center; gap: var(--sp-3); margin-bottom: var(--sp-3); flex-wrap:wrap; }
+  .section-head h2{ font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color: var(--ink-3); }
+
+  /* ---------- KPI row ---------- */
+  .kpi-row{
+    display:grid;
+    grid-template-columns: 1.6fr repeat(4, 1fr);
+    gap: var(--sp-4);
+    /* Tiles size to their own content rather than stretching to a shared row
+       height — a stretched item is locked to a fixed computed height, and any
+       content added after that (e.g. a longer state variant) would silently
+       overflow past its own border instead of growing the box. */
+    align-items: start;
+  }
+  @media (max-width: 980px){ .kpi-row{ grid-template-columns: repeat(2, 1fr); } .kpi-row .kpi-tile.hero{ grid-column: span 2; } }
+  @media (max-width: 560px){ .kpi-row{ grid-template-columns: 1fr; } .kpi-row .kpi-tile.hero{ grid-column: span 1; } }
+
+  .kpi-tile{
+    background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-4); box-shadow: var(--shadow-card);
+    min-height: 148px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .kpi-tile.hero{ border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+  .kpi-label{ font-size:12.5px; color: var(--ink-2); font-weight:500; }
+  .kpi-value{ font-size:26px; font-weight:600; margin-top: var(--sp-2); letter-spacing:-0.01em; }
+  .kpi-tile.hero .kpi-value{ font-size:44px; }
+  .kpi-sub{ font-size:12px; color: var(--ink-3); margin-top:2px; }
+  .kpi-foot{ display:flex; align-items:center; justify-content:space-between; margin-top: var(--sp-3); gap: var(--sp-2); }
+  .kpi-delta{ display:flex; align-items:center; gap:3px; font-size:12.5px; font-weight:600; }
+  .kpi-delta .icon{ width:13px; height:13px; }
+  .kpi-delta.good{ color: var(--delta-good); }
+  .kpi-delta.bad{ color: var(--delta-bad); }
+  .kpi-delta-basis{ color: var(--ink-3); font-weight:400; }
+  .kpi-spark{ display:block; }
+
+  /* ---------- Cards / charts ---------- */
+  .card{
+    background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-4); box-shadow: var(--shadow-card);
+  }
+  .card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap: var(--sp-3); margin-bottom: var(--sp-3); }
+  .card-title{ font-size:13.5px; font-weight:600; }
+  .card-sub{ font-size:12px; color: var(--ink-3); margin-top:2px; }
+
+  .ghost-btn{
+    background:transparent; border:1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-1) var(--sp-3); font-size:12px; color: var(--ink-2); cursor:pointer;
+    display:flex; align-items:center; gap: var(--sp-1); white-space:nowrap;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .ghost-btn:hover{ background: color-mix(in srgb, var(--ink) 5%, transparent); }
+
+  .segmented{ display:inline-flex; border:1px solid var(--border); border-radius: var(--radius-pill); padding:2px; gap:2px; background: var(--surface); }
+  .segmented button{
+    border:none; background:transparent; padding: var(--sp-1) var(--sp-3); border-radius: var(--radius-pill);
+    font-size:12.5px; color: var(--ink-2); cursor:pointer;
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .segmented button[aria-pressed="true"]{ background: var(--accent); color:#fff; }
+  .segmented button:disabled{ opacity:.5; cursor:default; }
+
+  .trends-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--sp-4); align-items: start; }
+
+  .chart-wrap{ position:relative; }
+  /* SVG charts are sized purely through CSS (never an "auto" height HTML
+     attribute, which isn't a valid SVG length and leaves the intrinsic size
+     that grid/flex track-sizing measures against undefined) so every layout
+     pass — including CSS Grid's auto-row measurement — sees the real size. */
+  .chart-wrap svg{ display:block; width:100%; height:auto; aspect-ratio: 2.6; }
+  .chart-tooltip{
+    position:absolute; pointer-events:none; z-index:5;
+    background: var(--ink); color: var(--page);
+    border-radius: 6px; padding: var(--sp-1) var(--sp-2); font-size:11.5px;
+    opacity:0; transform: translate(-50%, -110%); transition: opacity .1s ease;
+    white-space:nowrap;
+  }
+  .chart-tooltip.show{ opacity:1; }
+  .chart-tooltip .tt-value{ font-weight:700; font-size:12.5px; }
+  .chart-tooltip .tt-label{ color: color-mix(in srgb, var(--page) 65%, transparent); margin-top:1px; }
+
+  .table-wrap.data-table-twin{ font-size:12.5px; }
+  .data-table-twin table{ width:100%; border-collapse:collapse; }
+  .data-table-twin th, .data-table-twin td{ padding:6px 8px; text-align:right; border-bottom:1px solid var(--grid); }
+  .data-table-twin th:first-child, .data-table-twin td:first-child{ text-align:left; }
+
+  .hbar-row{ display:grid; grid-template-columns: 130px 1fr 44px; align-items:center; gap: var(--sp-3); padding:6px 0; cursor:default; }
+  .hbar-name{ font-size:12.5px; color: var(--ink-2); }
+  .hbar-track{ height:16px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--ink) 6%, transparent); position:relative; overflow:hidden; }
+  .hbar-fill{ position:absolute; left:0; top:0; bottom:0; border-radius: var(--radius-pill); transition: filter .1s ease; }
+  .hbar-row:hover .hbar-fill, .hbar-row:focus-visible .hbar-fill{ filter: brightness(1.08); }
+  .hbar-val{ font-size:12.5px; color: var(--ink-2); text-align:right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Skeletons ---------- */
+  .skel{ background: linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 25%, color-mix(in srgb, var(--ink) 10%, transparent) 37%, color-mix(in srgb, var(--ink) 6%, transparent) 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius:6px; }
+  @keyframes shimmer{ 0%{ background-position: 100% 0; } 100%{ background-position: 0 0; } }
+
+  /* ---------- Empty / error states ---------- */
+  .state-block{ display:flex; flex-direction:column; align-items:flex-start; gap: var(--sp-2); padding: var(--sp-4) 0; color: var(--ink-2); }
+  .state-block .icon{ color: var(--ink-3); }
+  .state-block.is-error .icon{ color: var(--critical); }
+  .state-block p{ font-size:12.5px; max-width:52ch; }
+  .state-block .retry-btn{ margin-top:2px; }
+
+  /* ---------- Chips ---------- */
+  .chip{
+    display:inline-flex; align-items:center; gap: var(--sp-1);
+    padding: var(--sp-1) var(--sp-3) var(--sp-1) var(--sp-2); border-radius: var(--radius-pill);
+    font-size:11.5px; font-weight:500; color: var(--ink-2);
+    border:1px solid var(--border);
+  }
+  .chip .icon{ width:12px; height:12px; }
+  .chip.status-active{ background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
+  .chip.status-active .icon{ color: var(--good); }
+  .chip.status-trial{ background: color-mix(in srgb, var(--warning) 16%, var(--surface)); }
+  .chip.status-trial .icon{ color: color-mix(in srgb, var(--warning) 70%, var(--ink)); }
+  .chip.status-churned{ background: color-mix(in srgb, var(--critical) 12%, var(--surface)); }
+  .chip.status-churned .icon{ color: var(--critical); }
+  .chip.plan{ background: color-mix(in srgb, var(--accent) 10%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 25%, var(--border)); }
+
+  /* ---------- Table ---------- */
+  .table-controls{ display:flex; gap: var(--sp-3); flex-wrap:wrap; margin-bottom: var(--sp-3); }
+  .search-field{
+    display:flex; align-items:center; gap: var(--sp-2);
+    border:1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-2) var(--sp-3); min-width:200px; flex:1;
+    color: var(--ink-3);
+  }
+  .search-field input{ border:none; background:transparent; outline:none; color:var(--ink); width:100%; }
+  .search-field:focus-within{ outline: 2px solid var(--accent); outline-offset:1px; }
+  .filter-select{ border:1px solid var(--border); border-radius: var(--radius); padding: var(--sp-2) var(--sp-3); background: var(--surface); color: var(--ink-2); cursor:pointer; }
+
+  .table-scroll{ overflow-x:auto; }
+  table.signups{ width:100%; border-collapse:collapse; min-width:640px; }
+  table.signups th{ text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color: var(--ink-3); padding: var(--sp-2); border-bottom:1px solid var(--grid); white-space:nowrap; }
+  table.signups td{ padding: var(--sp-2); font-size:13px; border-bottom:1px solid var(--grid); }
+  table.signups tbody tr:nth-child(even){ background: color-mix(in srgb, var(--ink) 2.5%, transparent); }
+  table.signups td.num, table.signups th.num{ text-align:right; font-variant-numeric: tabular-nums; }
+  table.signups td.company{ max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500; }
+  .sort-btn{ background:none; border:none; padding:0; margin:0; display:inline-flex; align-items:center; gap: var(--sp-1); color: inherit; cursor:pointer; font: inherit; text-transform: inherit; letter-spacing: inherit; }
+  .sort-btn .icon{ color: var(--ink-3); }
+  .sort-btn[data-active="true"] .icon{ color: var(--ink); }
+
+  .footnote{ font-size:12px; color: var(--ink-3); margin-top: var(--sp-3); }
+</style>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div>
+        <h1>Acme · Business overview</h1>
+        <p id="greeting">Good morning — here's how things stand.</p>
+      </div>
+    </div>
+    <div class="head-controls">
+      <span class="updated-note" id="updatedNote">Updated just now</span>
+      <label class="preview-state">
+        Preview state
+        <select id="previewState" aria-label="Preview a widget state (demo)">
+          <option value="ideal">Ideal</option>
+          <option value="loading">Loading</option>
+          <option value="empty">Empty</option>
+          <option value="partial">Partial</option>
+          <option value="error">Error</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <section aria-labelledby="kpi-heading">
+    <div class="section-head"><h2 id="kpi-heading">This month at a glance</h2></div>
+    <div class="kpi-row" id="kpiRow"></div>
+  </section>
+
+  <section aria-labelledby="trends-heading">
+    <div class="section-head">
+      <h2 id="trends-heading">Trends</h2>
+      <div class="segmented" id="rangeControl" role="group" aria-label="Trend range">
+        <button type="button" data-range="6" aria-pressed="false">6 months</button>
+        <button type="button" data-range="12" aria-pressed="true">12 months</button>
+      </div>
+    </div>
+    <div class="trends-grid" id="trendsGrid"></div>
+  </section>
+
+  <section aria-labelledby="feature-heading">
+    <div class="section-head"><h2 id="feature-heading">Feature adoption</h2></div>
+    <div id="featureCard"></div>
+  </section>
+
+  <section aria-labelledby="signups-heading">
+    <div class="section-head"><h2 id="signups-heading">Recent signups</h2></div>
+    <div id="signupsCard"></div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================= ICONS ============================= */
+  const ICONS = {
+    search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+    chevronUp: '<polyline points="18 15 12 9 6 15"/>',
+    chevronDown: '<polyline points="6 9 12 15 18 9"/>',
+    chevronsUpDown: '<polyline points="7 9 12 4 17 9"/><polyline points="7 15 12 20 17 15"/>',
+    arrowUp: '<line x1="12" y1="19" x2="12" y2="6"/><polyline points="6 12 12 6 18 12"/>',
+    arrowDown: '<line x1="12" y1="5" x2="12" y2="18"/><polyline points="18 12 12 18 6 12"/>',
+    alertTriangle: '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    refresh: '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+    inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+    checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    xCircle: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+    loader: '<circle cx="12" cy="12" r="9" opacity="0.25"/><path d="M21 12a9 9 0 0 0-9-9"/>'
+  };
+  function icon(name, cls){ return '<svg class="icon '+(cls||'')+'" viewBox="0 0 24 24" aria-hidden="true">'+ICONS[name]+'</svg>'; }
+
+  /* ============================= DATA ============================= */
+  const MONTHS = ["Aug ’25","Sep ’25","Oct ’25","Nov ’25","Dec ’25","Jan ’26","Feb ’26","Mar ’26","Apr ’26","May ’26","Jun ’26","Jul ’26"];
+  const DATA = {
+    mrr: [31200, 33000, 35400, 37100, 39800, 42500, 44900, 47600, 50300, 53100, 54900, 58420],
+    mrrTarget: 60000,
+    activeUsers: [2150, 2340, 2510, 2690, 2895, 3120, 3340, 3560, 3790, 3980, 4006, 4215],
+    churn: [4.5, 4.1, 4.8, 3.9, 3.6, 3.3, 3.8, 3.1, 2.9, 3.2, 3.2, 2.8],
+    churnTarget: 3.0,
+    signups: { current: 37, prior: 33 },
+    accounts: { current: 420, prior: 405 },
+    features: [
+      { name: "Dashboards", pct: 92 },
+      { name: "Integrations", pct: 68 },
+      { name: "Team workspaces", pct: 61 },
+      { name: "Custom reports", pct: 47 },
+      { name: "API access", pct: 34 },
+      { name: "Scheduled exports", pct: 29 },
+      { name: "SSO / SAML", pct: 18 }
+    ],
+    signupRows: [
+      { company: "Brightloop", plan: "Growth", mrr: 199, date: "2026-07-15", status: "Active" },
+      { company: "Cedar & Co", plan: "Starter", mrr: 49, date: "2026-07-15", status: "Trial" },
+      { company: "Quill Labs", plan: "Enterprise", mrr: 899, date: "2026-07-14", status: "Active" },
+      { company: "Marlin Systems", plan: "Growth", mrr: 199, date: "2026-07-13", status: "Trial" },
+      { company: "Pinepoint", plan: "Starter", mrr: 49, date: "2026-07-12", status: "Active" },
+      { company: "Vector Union", plan: "Growth", mrr: 199, date: "2026-07-11", status: "Trial" },
+      { company: "Harbor Metrics", plan: "Enterprise", mrr: 899, date: "2026-07-10", status: "Active" },
+      { company: "Lumen Works", plan: "Starter", mrr: 49, date: "2026-07-09", status: "Churned" },
+      { company: "Fjord Analytics", plan: "Growth", mrr: 199, date: "2026-07-08", status: "Active" },
+      { company: "Kestrel Software", plan: "Starter", mrr: 49, date: "2026-07-06", status: "Trial" },
+      { company: "Anchorpoint", plan: "Enterprise", mrr: 899, date: "2026-07-03", status: "Active" },
+      { company: "Solstice Digital", plan: "Growth", mrr: 199, date: "2026-07-01", status: "Active" }
+    ]
+  };
+
+  /* ============================= FORMATTERS ============================= */
+  function moneyCompact(n){
+    if (Math.abs(n) >= 1000) return "$" + (n/1000).toFixed(1).replace(/\.0$/, "") + "K";
+    return "$" + Math.round(n);
+  }
+  function moneyFull(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
+  function pct1(n){ return n.toFixed(1) + "%"; }
+  function signedPct(n){ return (n > 0 ? "+" : "") + n.toFixed(1) + "%"; }
+  function signedPp(n){ return (n > 0 ? "+" : "") + n.toFixed(1) + "pp"; }
+  function niceDate(iso){
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+
+  /* ============================= DERIVED KPIs ============================= */
+  function last(arr){ return arr[arr.length - 1]; }
+  function prevLast(arr){ return arr[arr.length - 2]; }
+
+  const mrrNow = last(DATA.mrr), mrrPrev = prevLast(DATA.mrr);
+  const auNow = last(DATA.activeUsers), auPrev = prevLast(DATA.activeUsers);
+  const churnNow = last(DATA.churn), churnPrev = prevLast(DATA.churn);
+  const arpuNow = mrrNow / DATA.accounts.current;
+  const arpuPrev = mrrPrev / DATA.accounts.prior;
+
+  const KPI = [
+    {
+      key: "mrr", hero: true, label: "Monthly recurring revenue",
+      value: moneyCompact(mrrNow),
+      sub: DATA.accounts.current.toLocaleString() + " paying accounts",
+      deltaPct: (mrrNow - mrrPrev) / mrrPrev * 100, good: true,
+      spark: DATA.mrr, color: "var(--accent)"
+    },
+    {
+      key: "activeUsers", label: "Active users (MAU)",
+      value: auNow.toLocaleString(),
+      sub: "vs " + auPrev.toLocaleString() + " last month",
+      deltaPct: (auNow - auPrev) / auPrev * 100, good: true,
+      spark: DATA.activeUsers, color: "var(--accent-2)"
+    },
+    {
+      key: "churn", label: "Churn rate",
+      value: pct1(churnNow),
+      sub: "target ≤ " + pct1(DATA.churnTarget),
+      deltaPp: churnNow - churnPrev, good: (churnNow - churnPrev) <= 0, isChurn: true,
+      spark: DATA.churn, color: "var(--critical)"
+    },
+    {
+      key: "signups", label: "New signups this month",
+      value: DATA.signups.current.toLocaleString(),
+      sub: "vs " + DATA.signups.prior + " last month",
+      deltaPct: (DATA.signups.current - DATA.signups.prior) / DATA.signups.prior * 100, good: true,
+      spark: [24,29,31,28,33,DATA.signups.current], color: "var(--accent)"
+    },
+    {
+      key: "arpu", label: "ARPU",
+      value: moneyFull(arpuNow) + "/mo",
+      sub: "per paying account",
+      deltaPct: (arpuNow - arpuPrev) / arpuPrev * 100, good: true,
+      spark: [131,133,134,135,136,Math.round(arpuNow)], color: "var(--accent-2)"
+    }
+  ];
+
+  /* ============================= STATE ============================= */
+  let kpiState = "loading", trendsState = "loading", featureState = "loading", signupsState = "loading";
+  let trendsRange = 12;
+  let sortKey = "date", sortDir = "desc";
+  let searchTerm = "", planFilter = "all", statusFilter = "all";
+
+  /* ============================= SMALL DOM HELPERS ============================= */
+  function el(tag, attrs, html){
+    const e = document.createElement(tag);
+    if (attrs) for (const k in attrs) {
+      if (k === "class") e.className = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function svgEl(tag, attrs){
+    const e = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function svgPointer(svg, evt){
+    const pt = svg.createSVGPoint();
+    pt.x = evt.clientX; pt.y = evt.clientY;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return { x: 0, y: 0 };
+    const loc = pt.matrixTransform(ctm.inverse());
+    return { x: loc.x, y: loc.y };
+  }
+  // Text label with a surface-colored halo behind it, appended last so it always
+  // paints on top of bars/lines/areas — a mark drawn afterward can never clip it.
+  function addHaloText(svg, x, y, text, anchor){
+    const t = svgEl("text", { x: x, y: y, "text-anchor": anchor, "font-size": "9.5", fill: "var(--ink-3)" });
+    t.textContent = text;
+    svg.appendChild(t);
+    let bbox = null;
+    try { bbox = t.getBBox(); } catch (e) { bbox = null; }
+    if (bbox) {
+      const pad = 2;
+      const rect = svgEl("rect", { x: bbox.x - pad, y: bbox.y - pad, width: bbox.width + pad * 2, height: bbox.height + pad * 2, fill: "var(--surface)", opacity: "0.9", rx: "2" });
+      svg.insertBefore(rect, t);
+    }
+    return t;
+  }
+
+  /* ============================= SKELETON / EMPTY / ERROR BUILDERS ============================= */
+  function skeletonKpi(hero){
+    const t = el("div", { class: "kpi-tile" + (hero ? " hero" : "") });
+    t.appendChild(el("div", { class: "skel", style: "width:70%;height:12px;" }));
+    const v = el("div", { class: "skel", style: "width:55%;height:" + (hero ? "40px" : "24px") + ";margin-top:10px;" });
+    t.appendChild(v);
+    t.appendChild(el("div", { class: "skel", style: "width:100%;height:20px;margin-top:14px;" }));
+    return t;
+  }
+  function emptyBlock(message, opts){
+    opts = opts || {};
+    const b = el("div", { class: "state-block" });
+    b.innerHTML = icon("inbox", "icon-lg");
+    const p = el("p"); p.textContent = message; b.appendChild(p);
+    return b;
+  }
+  function errorBlock(message, sectionKey){
+    const b = el("div", { class: "state-block is-error" });
+    b.innerHTML = icon("alertTriangle", "icon-lg");
+    const p = el("p"); p.textContent = message; b.appendChild(p);
+    const btn = el("button", { class: "ghost-btn retry-btn", type: "button", "data-retry": sectionKey });
+    btn.innerHTML = icon("refresh", "icon-sm") + " Retry";
+    b.appendChild(btn);
+    return b;
+  }
+
+  /* ============================= KPI ROW ============================= */
+  function renderKPIRow(){
+    const root = document.getElementById("kpiRow");
+    root.innerHTML = "";
+
+    if (kpiState === "loading") {
+      KPI.forEach(k => root.appendChild(skeletonKpi(k.hero)));
+      return;
+    }
+    if (kpiState === "empty") {
+      KPI.forEach(k => {
+        const t = el("div", { class: "kpi-tile" + (k.hero ? " hero" : "") });
+        const label = el("div", { class: "kpi-label" }); label.textContent = k.label;
+        t.appendChild(label);
+        t.appendChild(emptyBlock("No data yet — connect billing and product analytics to see this metric."));
+        root.appendChild(t);
+      });
+      return;
+    }
+    if (kpiState === "error") {
+      KPI.forEach(k => {
+        const t = el("div", { class: "kpi-tile" + (k.hero ? " hero" : "") });
+        const label = el("div", { class: "kpi-label" }); label.textContent = k.label;
+        t.appendChild(label);
+        t.appendChild(errorBlock("Couldn't load this metric.", "kpi"));
+        root.appendChild(t);
+      });
+      return;
+    }
+
+    // partial or ideal
+    KPI.forEach(k => {
+      const t = el("div", { class: "kpi-tile" + (k.hero ? " hero" : "") });
+      const label = el("div", { class: "kpi-label" }); label.textContent = k.label;
+      t.appendChild(label);
+
+      const value = el("div", { class: "kpi-value" }); value.textContent = k.value;
+      t.appendChild(value);
+
+      const sub = el("div", { class: "kpi-sub" }); sub.textContent = k.sub;
+      t.appendChild(sub);
+
+      const foot = el("div", { class: "kpi-foot" });
+
+      if (kpiState === "partial") {
+        const basis = el("span", { class: "kpi-delta-basis" });
+        basis.textContent = "prior period unavailable";
+        foot.appendChild(basis);
+      } else {
+        const deltaVal = k.isChurn ? k.deltaPp : k.deltaPct;
+        const good = k.good;
+        const up = deltaVal >= 0;
+        const delta = el("span", { class: "kpi-delta " + (good ? "good" : "bad") });
+        delta.innerHTML = icon(up ? "arrowUp" : "arrowDown");
+        const dText = document.createElement("span");
+        dText.textContent = k.isChurn ? signedPp(deltaVal) : signedPct(deltaVal);
+        delta.appendChild(dText);
+        foot.appendChild(delta);
+        const basis = el("span", { class: "kpi-delta-basis" }); basis.textContent = "vs last month";
+        foot.appendChild(basis);
+      }
+      t.appendChild(foot);
+
+      const sparkSvg = buildSparkline(k.spark, k.color);
+      sparkSvg.classList.add("kpi-spark");
+      t.appendChild(sparkSvg);
+
+      root.appendChild(t);
+    });
+  }
+
+  function buildSparkline(values, color){
+    const w = 100, h = 26, pad = 2;
+    const min = Math.min.apply(null, values), max = Math.max.apply(null, values);
+    const range = (max - min) || 1;
+    const svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, width: "100%", height: h, "aria-hidden": "true" });
+    const pts = values.map((v, i) => {
+      const x = pad + (i / (values.length - 1)) * (w - pad * 2);
+      const y = h - pad - ((v - min) / range) * (h - pad * 2);
+      return [x, y];
+    });
+    const dLine = pts.map((p, i) => (i === 0 ? "M" : "L") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+    const dArea = dLine + " L" + pts[pts.length - 1][0].toFixed(1) + "," + h + " L" + pts[0][0].toFixed(1) + "," + h + " Z";
+    svg.appendChild(svgEl("path", { d: dArea, fill: color, opacity: "0.10", stroke: "none" }));
+    svg.appendChild(svgEl("path", { d: dLine, fill: "none", stroke: color, "stroke-width": "1.75", "stroke-linejoin": "round", "stroke-linecap": "round" }));
+    const lastP = pts[pts.length - 1];
+    svg.appendChild(svgEl("circle", { cx: lastP[0], cy: lastP[1], r: "3", fill: color, stroke: "var(--surface)", "stroke-width": "1.5" }));
+    return svg;
+  }
+
+  /* ============================= TRENDS ============================= */
+  function slice(arr){ return arr.slice(arr.length - trendsRange); }
+  function sliceMonths(){ return MONTHS.slice(MONTHS.length - trendsRange); }
+
+  function chartCardShell(id, title, sub){
+    const card = el("div", { class: "card chart-card" });
+    const head = el("div", { class: "card-head" });
+    const titles = el("div");
+    const h3 = el("h3", { class: "card-title" }); h3.textContent = title;
+    const p = el("p", { class: "card-sub" }); p.textContent = sub;
+    titles.appendChild(h3); titles.appendChild(p);
+    head.appendChild(titles);
+    card.appendChild(head);
+    const body = el("div", { class: "card-body", id: id + "-body" });
+    card.appendChild(body);
+    card._head = head; card._body = body;
+    return card;
+  }
+
+  function addTableToggle(head, body, vizNode, tableNode){
+    body.appendChild(vizNode);
+    tableNode.hidden = true;
+    body.appendChild(tableNode);
+    const btn = el("button", { class: "ghost-btn table-toggle", type: "button", "aria-pressed": "false" });
+    btn.innerHTML = icon("chevronsUpDown", "icon-sm") + " View as table";
+    btn.addEventListener("click", () => {
+      const showingTable = !tableNode.hidden;
+      tableNode.hidden = showingTable;
+      vizNode.hidden = !showingTable;
+      btn.setAttribute("aria-pressed", String(!showingTable));
+      btn.lastChild.textContent = " " + (!showingTable ? "View as chart" : "View as table");
+    });
+    head.appendChild(btn);
+  }
+
+  function renderTrends(){
+    const root = document.getElementById("trendsGrid");
+    root.innerHTML = "";
+    document.querySelectorAll("#rangeControl button").forEach(b => { b.disabled = trendsState === "loading"; });
+
+    const specs = [
+      { id: "mrr", title: "MRR trend vs " + moneyCompact(DATA.mrrTarget) + " target", key: "mrr" },
+      { id: "active", title: "Active users trend — " + signedPct((auNow - auPrev) / auPrev * 100) + " this month", key: "activeUsers" },
+      { id: "churn", title: "Churn rate vs " + pct1(DATA.churnTarget) + " target", key: "churn" }
+    ];
+
+    specs.forEach(spec => {
+      const sub = trendsRange + "-month view";
+      const card = chartCardShell("chart-" + spec.id, spec.title, sub);
+      root.appendChild(card);
+
+      if (trendsState === "loading") {
+        const s = el("div", { style: "height:180px;display:flex;align-items:flex-end;gap:8px;" });
+        for (let i = 0; i < 8; i++) {
+          s.appendChild(el("div", { class: "skel", style: "flex:1;height:" + (30 + (i % 4) * 25) + "px;" }));
+        }
+        card._body.appendChild(s);
+        return;
+      }
+      if (spec.key !== undefined && trendsState === "empty") {
+        card._body.appendChild(emptyBlock("Not enough history yet — check back after your first full month."));
+        return;
+      }
+      if (trendsState === "error") {
+        card._body.appendChild(errorBlock("Couldn't load this chart.", "trends"));
+        return;
+      }
+
+      let months = sliceMonths();
+      let values = spec.key === "mrr" ? slice(DATA.mrr) : spec.key === "activeUsers" ? slice(DATA.activeUsers) : slice(DATA.churn);
+      let partialNote = null;
+      if (trendsState === "partial") {
+        const keep = Math.max(4, Math.ceil(values.length * 0.4));
+        months = months.slice(months.length - keep);
+        values = values.slice(values.length - keep);
+        partialNote = el("p", { class: "footnote" });
+        partialNote.textContent = "Showing " + keep + " of " + trendsRange + " months — the rest hasn't finished syncing.";
+      }
+
+      const vizWrap = el("div", { class: "chart-wrap" });
+      const tableWrap = el("div", { class: "table-wrap data-table-twin" });
+
+      if (spec.key === "churn") {
+        vizWrap.appendChild(buildBarChartVertical(months, values, {
+          color: "var(--accent)", threshold: DATA.churnTarget, unit: "%",
+          goodBelow: true, formatValue: pct1
+        }));
+        tableWrap.appendChild(buildTableTwin(["Month", "Churn"], months.map((m, i) => [m, pct1(values[i])])));
+      } else {
+        const target = spec.key === "mrr" ? DATA.mrrTarget : null;
+        vizWrap.appendChild(buildLineChart(months, values, {
+          color: spec.key === "mrr" ? "var(--accent)" : "var(--accent-2)",
+          target: target,
+          targetLabel: target ? moneyCompact(target) + " target" : null,
+          formatValue: spec.key === "mrr" ? moneyCompact : (v => Math.round(v).toLocaleString())
+        }));
+        tableWrap.appendChild(buildTableTwin(["Month", spec.key === "mrr" ? "MRR" : "Active users"],
+          months.map((m, i) => [m, spec.key === "mrr" ? moneyCompact(values[i]) : Math.round(values[i]).toLocaleString()])));
+      }
+
+      addTableToggle(card._head, card._body, vizWrap, tableWrap);
+      if (partialNote) card._body.appendChild(partialNote);
+    });
+  }
+
+  function buildTableTwin(headers, rows){
+    const wrap = el("div", { class: "table-scroll" });
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    headers.forEach(h => { const th = document.createElement("th"); th.textContent = h; trh.appendChild(th); });
+    thead.appendChild(trh); table.appendChild(thead);
+    const tbody = document.createElement("tbody");
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+      r.forEach(c => { const td = document.createElement("td"); td.textContent = c; tr.appendChild(td); });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    return wrap;
+  }
+
+  function buildLineChart(labels, values, opts){
+    const w = 520, h = 200, padL = 46, padR = 14, padT = 16, padB = 26;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const allVals = opts.target ? values.concat([opts.target]) : values;
+    const min = Math.min.apply(null, allVals), max = Math.max.apply(null, allVals);
+    const span = (max - min) || 1;
+    const yFor = v => padT + plotH - ((v - min) / span) * plotH;
+    const xFor = i => padL + (i / (values.length - 1)) * plotW;
+
+    const wrap = el("div", { style: "position:relative;" });
+    const svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": "Line chart" });
+
+    // gridlines (3 steps)
+    const steps = 3;
+    for (let s = 0; s <= steps; s++) {
+      const v = min + (span * s / steps);
+      const y = yFor(v);
+      svg.appendChild(svgEl("line", { x1: padL, x2: w - padR, y1: y, y2: y, stroke: "var(--grid)", "stroke-width": "1" }));
+      const t = svgEl("text", { x: padL - 8, y: y + 3, "text-anchor": "end", "font-size": "9.5", fill: "var(--ink-3)" });
+      t.textContent = opts.formatValue(v);
+      svg.appendChild(t);
+    }
+
+    // target baseline — line only here; its label is drawn last (see below) so
+    // it always paints on top and is anchored LEFT so it never collides with
+    // the end-of-line data label, which always sits at the right edge.
+    if (opts.target != null) {
+      const ty = yFor(opts.target);
+      svg.appendChild(svgEl("line", { x1: padL, x2: w - padR, y1: ty, y2: ty, stroke: "var(--ink-3)", "stroke-width": "1.25", "stroke-dasharray": "3,3" }));
+    }
+
+    // x labels (thin every other on 12mo)
+    const labelEvery = labels.length > 8 ? 2 : 1;
+    labels.forEach((lab, i) => {
+      if (i % labelEvery !== 0 && i !== labels.length - 1) return;
+      const t = svgEl("text", { x: xFor(i), y: h - 6, "text-anchor": "middle", "font-size": "9.5", fill: "var(--ink-3)" });
+      t.textContent = lab;
+      svg.appendChild(t);
+    });
+
+    // area + line
+    const pts = values.map((v, i) => [xFor(i), yFor(v)]);
+    const dLine = pts.map((p, i) => (i === 0 ? "M" : "L") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+    const dArea = dLine + " L" + pts[pts.length - 1][0].toFixed(1) + "," + (padT + plotH) + " L" + pts[0][0].toFixed(1) + "," + (padT + plotH) + " Z";
+    svg.appendChild(svgEl("path", { d: dArea, fill: opts.color, opacity: "0.10", stroke: "none" }));
+    svg.appendChild(svgEl("path", { d: dLine, fill: "none", stroke: opts.color, "stroke-width": "2", "stroke-linejoin": "round", "stroke-linecap": "round" }));
+
+    // end marker + direct label
+    const lastPt = pts[pts.length - 1];
+    svg.appendChild(svgEl("circle", { cx: lastPt[0], cy: lastPt[1], r: "4", fill: opts.color, stroke: "var(--surface)", "stroke-width": "2" }));
+    const endLabel = svgEl("text", { x: lastPt[0], y: lastPt[1] - 10, "text-anchor": "end", "font-size": "11", "font-weight": "600", fill: "var(--ink)" });
+    endLabel.textContent = opts.formatValue(values[values.length - 1]);
+    svg.appendChild(endLabel);
+
+    if (opts.target != null) {
+      const ty = yFor(opts.target);
+      addHaloText(svg, padL, ty - 5, opts.targetLabel, "start");
+    }
+
+    // crosshair
+    const crosshair = svgEl("line", { x1: 0, x2: 0, y1: padT, y2: padT + plotH, stroke: "var(--ink-3)", "stroke-width": "1", opacity: "0" });
+    svg.appendChild(crosshair);
+    const hoverDot = svgEl("circle", { r: "5", fill: opts.color, stroke: "var(--surface)", "stroke-width": "2", opacity: "0" });
+    svg.appendChild(hoverDot);
+
+    const overlay = svgEl("rect", { x: padL, y: padT, width: plotW, height: plotH, fill: "transparent", tabindex: "0", "aria-label": "Chart data, use arrow keys to explore points" });
+    svg.appendChild(overlay);
+
+    wrap.appendChild(svg);
+    const tooltip = el("div", { class: "chart-tooltip" });
+    wrap.appendChild(tooltip);
+
+    let idx = values.length - 1;
+    function show(i){
+      idx = Math.max(0, Math.min(values.length - 1, i));
+      const p = pts[idx];
+      crosshair.setAttribute("x1", p[0]); crosshair.setAttribute("x2", p[0]); crosshair.setAttribute("opacity", "1");
+      hoverDot.setAttribute("cx", p[0]); hoverDot.setAttribute("cy", p[1]); hoverDot.setAttribute("opacity", "1");
+      tooltip.style.left = (p[0] / w * 100) + "%";
+      tooltip.style.top = (p[1] / h * 100) + "%";
+      tooltip.innerHTML = '<div class="tt-value">' + opts.formatValue(values[idx]) + '</div><div class="tt-label"></div>';
+      tooltip.querySelector(".tt-label").textContent = labels[idx];
+      tooltip.classList.add("show");
+    }
+    function hide(){
+      crosshair.setAttribute("opacity", "0");
+      hoverDot.setAttribute("opacity", "0");
+      tooltip.classList.remove("show");
+    }
+    overlay.addEventListener("pointermove", evt => {
+      const p = svgPointer(svg, evt);
+      const rel = (p.x - padL) / plotW;
+      const i = Math.round(rel * (values.length - 1));
+      show(i);
+    });
+    overlay.addEventListener("pointerleave", hide);
+    overlay.addEventListener("focus", () => show(values.length - 1));
+    overlay.addEventListener("blur", hide);
+    overlay.addEventListener("keydown", evt => {
+      if (evt.key === "ArrowLeft") { show(idx - 1); evt.preventDefault(); }
+      else if (evt.key === "ArrowRight") { show(idx + 1); evt.preventDefault(); }
+      else if (evt.key === "Escape") { hide(); }
+    });
+
+    return wrap;
+  }
+
+  function buildBarChartVertical(labels, values, opts){
+    const w = 520, h = 200, padL = 40, padR = 14, padT = 22, padB = 26;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const allVals = values.concat([opts.threshold]);
+    const min = 0, max = Math.max.apply(null, allVals) * 1.15;
+    const span = (max - min) || 1;
+    const yFor = v => padT + plotH - ((v - min) / span) * plotH;
+    const bandW = plotW / values.length;
+    const barW = Math.min(24, bandW * 0.55);
+
+    const wrap = el("div", { style: "position:relative;" });
+    const svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": "Bar chart" });
+
+    const baseline = yFor(0);
+    svg.appendChild(svgEl("line", { x1: padL, x2: w - padR, y1: baseline, y2: baseline, stroke: "var(--axis)", "stroke-width": "1" }));
+
+    if (opts.threshold != null) {
+      const ty = yFor(opts.threshold);
+      svg.appendChild(svgEl("line", { x1: padL, x2: w - padR, y1: ty, y2: ty, stroke: "var(--ink-3)", "stroke-width": "1.25", "stroke-dasharray": "3,3" }));
+    }
+
+    const tooltip = el("div", { class: "chart-tooltip" });
+
+    values.forEach((v, i) => {
+      const cx = padL + bandW * i + bandW / 2;
+      const y = yFor(v);
+      const good = opts.goodBelow ? v <= opts.threshold : v >= opts.threshold;
+      const color = good ? "var(--good)" : "var(--critical)";
+      const bar = svgEl("rect", { x: cx - barW / 2, y: y, width: barW, height: Math.max(1, baseline - y), rx: "4", fill: color, tabindex: "0", "aria-label": labels[i] + ": " + opts.formatValue(v) });
+      svg.appendChild(bar);
+
+      const val = svgEl("text", { x: cx, y: y - 6, "text-anchor": "middle", "font-size": "9.5", fill: "var(--ink-2)" });
+      val.textContent = opts.formatValue(v);
+      svg.appendChild(val);
+
+      const labelEvery = labels.length > 8 ? 2 : 1;
+      if (i % labelEvery === 0 || i === labels.length - 1) {
+        const lab = svgEl("text", { x: cx, y: h - 6, "text-anchor": "middle", "font-size": "9.5", fill: "var(--ink-3)" });
+        lab.textContent = labels[i];
+        svg.appendChild(lab);
+      }
+
+      function activate(){
+        bar.setAttribute("opacity", "0.8");
+        tooltip.style.left = (cx / w * 100) + "%";
+        tooltip.style.top = (y / h * 100) + "%";
+        tooltip.innerHTML = '<div class="tt-value">' + opts.formatValue(v) + '</div><div class="tt-label"></div>';
+        tooltip.querySelector(".tt-label").textContent = labels[i];
+        tooltip.classList.add("show");
+      }
+      function deactivate(){ bar.setAttribute("opacity", "1"); tooltip.classList.remove("show"); }
+      bar.addEventListener("pointerenter", activate);
+      bar.addEventListener("pointerleave", deactivate);
+      bar.addEventListener("focus", activate);
+      bar.addEventListener("blur", deactivate);
+    });
+
+    if (opts.threshold != null) {
+      const ty = yFor(opts.threshold);
+      addHaloText(svg, padL, ty - 5, "Target " + opts.formatValue(opts.threshold), "start");
+    }
+
+    wrap.appendChild(svg);
+    wrap.appendChild(tooltip);
+    return wrap;
+  }
+
+  /* ============================= FEATURE ADOPTION ============================= */
+  function renderFeatures(){
+    const root = document.getElementById("featureCard");
+    root.innerHTML = "";
+    const card = chartCardShell("feature", "Feature adoption — % of active accounts using each, last 30 days",
+      "Ranked by adoption. Low adopters are onboarding-nudge candidates.");
+    root.appendChild(card);
+
+    if (featureState === "loading") {
+      const s = el("div");
+      for (let i = 0; i < 6; i++) {
+        const row = el("div", { class: "hbar-row" });
+        row.appendChild(el("div", { class: "skel", style: "height:12px;width:80%;" }));
+        row.appendChild(el("div", { class: "skel", style: "height:16px;width:" + (30 + i * 10) + "%;border-radius:999px;" }));
+        row.appendChild(el("div"));
+        s.appendChild(row);
+      }
+      card._body.appendChild(s);
+      return;
+    }
+    if (featureState === "empty") {
+      card._body.appendChild(emptyBlock("No feature usage recorded yet — check back once accounts have onboarded."));
+      return;
+    }
+    if (featureState === "error") {
+      card._body.appendChild(errorBlock("Couldn't load feature adoption.", "features"));
+      return;
+    }
+
+    let rows = DATA.features.slice().sort((a, b) => b.pct - a.pct);
+    let note = null;
+    if (featureState === "partial") {
+      rows = rows.slice(0, 4);
+      note = el("p", { class: "footnote" });
+      note.textContent = "Showing 4 of " + DATA.features.length + " features — the rest don't have enough sample yet.";
+    }
+
+    const seqSteps = ["var(--seq-700)", "var(--seq-650)", "var(--seq-600)", "var(--seq-550)", "var(--seq-450)", "var(--seq-350)", "var(--seq-250)"];
+    const vizWrap = el("div", { class: "chart-wrap" });
+    rows.forEach((f, i) => {
+      const row = el("div", { class: "hbar-row", tabindex: "0" });
+      const name = el("div", { class: "hbar-name" }); name.textContent = f.name;
+      const track = el("div", { class: "hbar-track" });
+      const fill = el("div", { class: "hbar-fill", style: "width:" + f.pct + "%;background:" + (seqSteps[i] || "var(--accent)") + ";" });
+      track.appendChild(fill);
+      const val = el("div", { class: "hbar-val" }); val.textContent = f.pct + "%";
+      row.appendChild(name); row.appendChild(track); row.appendChild(val);
+      vizWrap.appendChild(row);
+    });
+
+    const tableWrap = el("div", { class: "table-wrap data-table-twin" });
+    tableWrap.appendChild(buildTableTwin(["Feature", "Adoption"], rows.map(f => [f.name, f.pct + "%"])));
+
+    addTableToggle(card._head, card._body, vizWrap, tableWrap);
+    if (note) card._body.appendChild(note);
+  }
+
+  /* ============================= RECENT SIGNUPS ============================= */
+  function statusChip(status){
+    const map = {
+      Active: { cls: "status-active", ic: "checkCircle" },
+      Trial: { cls: "status-trial", ic: "clock" },
+      Churned: { cls: "status-churned", ic: "xCircle" }
+    };
+    const m = map[status] || map.Active;
+    const chip = el("span", { class: "chip " + m.cls });
+    chip.innerHTML = icon(m.ic);
+    const t = document.createElement("span"); t.textContent = status;
+    chip.appendChild(t);
+    return chip;
+  }
+
+  function renderSignups(){
+    const root = document.getElementById("signupsCard");
+    root.innerHTML = "";
+    const card = el("div", { class: "card" });
+
+    if (signupsState === "loading") {
+      const s = el("div");
+      for (let i = 0; i < 5; i++) s.appendChild(el("div", { class: "skel", style: "height:34px;width:100%;margin-bottom:8px;" }));
+      card.appendChild(s);
+      root.appendChild(card);
+      return;
+    }
+    if (signupsState === "empty") {
+      card.appendChild(emptyBlock("No signups yet in this range — try widening it."));
+      root.appendChild(card);
+      return;
+    }
+    if (signupsState === "error") {
+      card.appendChild(errorBlock("Couldn't load recent signups.", "signups"));
+      root.appendChild(card);
+      return;
+    }
+
+    let sourceRows = DATA.signupRows;
+    let partialNote = null;
+    if (signupsState === "partial") {
+      sourceRows = sourceRows.map((r, i) => (i % 3 === 0 ? Object.assign({}, r, { plan: null }) : r));
+      partialNote = el("p", { class: "footnote" });
+      partialNote.textContent = "Some rows are still enriching — plan will fill in automatically.";
+    }
+
+    // controls
+    const controls = el("div", { class: "table-controls" });
+    const search = el("label", { class: "search-field" });
+    search.innerHTML = icon("search", "icon-sm");
+    const searchInput = document.createElement("input");
+    searchInput.type = "text"; searchInput.placeholder = "Search company…"; searchInput.value = searchTerm;
+    searchInput.setAttribute("aria-label", "Search signups by company");
+    search.appendChild(searchInput);
+    controls.appendChild(search);
+
+    const planSel = document.createElement("select");
+    planSel.className = "filter-select"; planSel.setAttribute("aria-label", "Filter by plan");
+    ["all", "Starter", "Growth", "Enterprise"].forEach(p => {
+      const o = document.createElement("option"); o.value = p; o.textContent = p === "all" ? "All plans" : p;
+      if (p === planFilter) o.selected = true;
+      planSel.appendChild(o);
+    });
+    controls.appendChild(planSel);
+
+    const statusSel = document.createElement("select");
+    statusSel.className = "filter-select"; statusSel.setAttribute("aria-label", "Filter by status");
+    ["all", "Trial", "Active", "Churned"].forEach(s => {
+      const o = document.createElement("option"); o.value = s; o.textContent = s === "all" ? "All statuses" : s;
+      if (s === statusFilter) o.selected = true;
+      statusSel.appendChild(o);
+    });
+    controls.appendChild(statusSel);
+    card.appendChild(controls);
+
+    // filter + sort
+    let rows = sourceRows.filter(r => {
+      if (searchTerm && !r.company.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+      if (planFilter !== "all" && r.plan !== planFilter) return false;
+      if (statusFilter !== "all" && r.status !== statusFilter) return false;
+      return true;
+    });
+    rows = rows.slice().sort((a, b) => {
+      let av, bv;
+      if (sortKey === "company") { av = a.company.toLowerCase(); bv = b.company.toLowerCase(); }
+      else if (sortKey === "mrr") { av = a.mrr; bv = b.mrr; }
+      else { av = a.date; bv = b.date; }
+      if (av < bv) return sortDir === "asc" ? -1 : 1;
+      if (av > bv) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    const scroll = el("div", { class: "table-scroll" });
+    const table = document.createElement("table");
+    table.className = "signups";
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+
+    function sortHeader(label, key, numeric){
+      const th = document.createElement("th");
+      if (numeric) th.classList.add("num");
+      const btn = document.createElement("button");
+      btn.className = "sort-btn";
+      btn.type = "button";
+      btn.setAttribute("data-active", String(sortKey === key));
+      const txt = document.createElement("span"); txt.textContent = label;
+      btn.appendChild(txt);
+      const ic = sortKey === key ? (sortDir === "asc" ? "chevronUp" : "chevronDown") : "chevronsUpDown";
+      const icSpan = document.createElement("span"); icSpan.innerHTML = icon(ic, "icon-sm");
+      btn.appendChild(icSpan);
+      btn.addEventListener("click", () => {
+        if (sortKey === key) sortDir = sortDir === "asc" ? "desc" : "asc";
+        else { sortKey = key; sortDir = key === "date" || key === "mrr" ? "desc" : "asc"; }
+        renderSignups();
+      });
+      th.appendChild(btn);
+      return th;
+    }
+    trh.appendChild(sortHeader("Company", "company", false));
+    const planTh = document.createElement("th"); planTh.textContent = "Plan"; trh.appendChild(planTh);
+    trh.appendChild(sortHeader("MRR", "mrr", true));
+    trh.appendChild(sortHeader("Signed up", "date", false));
+    const statusTh = document.createElement("th"); statusTh.textContent = "Status"; trh.appendChild(statusTh);
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    if (rows.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 5;
+      const b = emptyBlock("No signups match your search or filters.");
+      const clearBtn = el("button", { class: "ghost-btn", type: "button", style: "margin-top:6px;" });
+      clearBtn.textContent = "Clear filters";
+      clearBtn.addEventListener("click", () => {
+        searchTerm = ""; planFilter = "all"; statusFilter = "all";
+        renderSignups();
+      });
+      b.appendChild(clearBtn);
+      td.appendChild(b);
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    } else {
+      rows.forEach(r => {
+        const tr = document.createElement("tr");
+        const tdCompany = document.createElement("td");
+        tdCompany.className = "company"; tdCompany.title = r.company; tdCompany.textContent = r.company;
+        tr.appendChild(tdCompany);
+
+        const tdPlan = document.createElement("td");
+        if (r.plan) {
+          const chip = el("span", { class: "chip plan" });
+          const t = document.createElement("span"); t.textContent = r.plan;
+          chip.appendChild(t);
+          tdPlan.appendChild(chip);
+        } else {
+          const dash = document.createElement("span"); dash.textContent = "—"; dash.style.color = "var(--ink-3)";
+          tdPlan.appendChild(dash);
+        }
+        tr.appendChild(tdPlan);
+
+        const tdMrr = document.createElement("td");
+        tdMrr.className = "num"; tdMrr.style.fontVariantNumeric = "tabular-nums";
+        tdMrr.textContent = moneyFull(r.mrr);
+        tr.appendChild(tdMrr);
+
+        const tdDate = document.createElement("td");
+        tdDate.textContent = niceDate(r.date);
+        tr.appendChild(tdDate);
+
+        const tdStatus = document.createElement("td");
+        tdStatus.appendChild(statusChip(r.status));
+        tr.appendChild(tdStatus);
+
+        tbody.appendChild(tr);
+      });
+    }
+    table.appendChild(tbody);
+    scroll.appendChild(table);
+    card.appendChild(scroll);
+
+    const summary = el("p", { class: "footnote" });
+    summary.textContent = "Showing " + rows.length + " of " + sourceRows.length + " signups.";
+    card.appendChild(summary);
+    if (partialNote) card.appendChild(partialNote);
+
+    root.appendChild(card);
+
+    searchInput.addEventListener("input", () => { searchTerm = searchInput.value; renderSignups(); });
+    planSel.addEventListener("change", () => { planFilter = planSel.value; renderSignups(); });
+    statusSel.addEventListener("change", () => { statusFilter = statusSel.value; renderSignups(); });
+  }
+
+  /* ============================= WIRING ============================= */
+  function renderAll(){
+    renderKPIRow();
+    renderTrends();
+    renderFeatures();
+    renderSignups();
+  }
+
+  function setAllStates(s){
+    kpiState = s; trendsState = s; featureState = s; signupsState = s;
+    renderAll();
+  }
+
+  document.getElementById("previewState").addEventListener("change", evt => {
+    setAllStates(evt.target.value);
+  });
+
+  document.addEventListener("click", evt => {
+    const btn = evt.target.closest("[data-retry]");
+    if (!btn) return;
+    const section = btn.getAttribute("data-retry");
+    if (section === "kpi") { kpiState = "loading"; renderKPIRow(); setTimeout(() => { kpiState = "ideal"; renderKPIRow(); syncPreviewSelect(); }, 600); }
+    if (section === "trends") { trendsState = "loading"; renderTrends(); setTimeout(() => { trendsState = "ideal"; renderTrends(); syncPreviewSelect(); }, 600); }
+    if (section === "features") { featureState = "loading"; renderFeatures(); setTimeout(() => { featureState = "ideal"; renderFeatures(); syncPreviewSelect(); }, 600); }
+    if (section === "signups") { signupsState = "loading"; renderSignups(); setTimeout(() => { signupsState = "ideal"; renderSignups(); syncPreviewSelect(); }, 600); }
+  });
+
+  function syncPreviewSelect(){
+    const states = [kpiState, trendsState, featureState, signupsState];
+    const uniform = states.every(s => s === states[0]);
+    if (uniform) document.getElementById("previewState").value = states[0];
+  }
+
+  document.getElementById("rangeControl").addEventListener("click", evt => {
+    const btn = evt.target.closest("button[data-range]");
+    if (!btn || btn.disabled) return;
+    trendsRange = Number(btn.getAttribute("data-range"));
+    document.querySelectorAll("#rangeControl button").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+    renderTrends();
+  });
+
+  /* ============================= BOOT ============================= */
+  renderAll();
+  setTimeout(() => {
+    setAllStates("ideal");
+    document.getElementById("previewState").value = "ideal";
+    document.getElementById("updatedNote").textContent = "Updated just now";
+  }, 700);
+
+})();
+</script>
