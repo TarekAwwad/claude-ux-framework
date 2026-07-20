@@ -238,6 +238,7 @@ async function checkTablesBuild(browser, dirArg, FIXTURE) {
     const msg = /no (accounts|results|matches)|nothing (found|matches)|0 (accounts|results)|couldn't find|could not find|try (a different|adjusting)|clear (the )?(search|filter)/i.test(document.body.innerText);
     set.call(search, '');
     search.dispatchEvent(new Event('input', { bubbles: true }));
+    await new Promise(r => setTimeout(r, 300)); // let a debounced re-render settle before the next probe
     return { skip: false, msg };
   });
   add('STATE-empty-search', !emptyState.skip && emptyState.msg,
