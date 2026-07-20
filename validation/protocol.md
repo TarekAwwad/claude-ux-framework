@@ -61,6 +61,9 @@ the prompts were not recorded, and scoring leaned on static screenshots
 7. Prompt or fixture changes version the suite: note the suite commit in
    run.md (already required) and never compare scores across runs made
    with different prompt wording without saying so.
+7b. After both agents finish, run `git status` at the repo root: agents
+   sometimes drop intermediate work files outside their run directory.
+   Delete strays before committing anything.
 8. Publishing: every run that was scored gets reported. If more than one
    round was run, docs/validation.md reports all of them, including
    retracted findings; no picking the best run without saying so.
