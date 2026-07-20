@@ -4,14 +4,14 @@ Date: 2026-07-16. Produced by a web-research subagent; sources cited inline.
 
 ## 1. Kole Jain (YouTube channel)
 
-Kole Jain is a Canadian web/UI-UX designer and educator (channel: youtube.com/@KoleJain, personal site kolejain.com). Direct transcript fetching from YouTube itself failed (YouTube serves a JS-rendered shell to fetch tools), so the material below comes from third-party transcript summaries hosted on sozai.app (an AI transcription/note-taking service that publishes per-video transcript-and-summary pages). Each principle below is sourced to the specific sozai.app transcript page for a named video, with the underlying YouTube video linked for reference. These are AI-generated summaries of his spoken content, not his own written words, so treat exact phrasing as paraphrase, not direct quotation, unless marked with quotation marks (those are verbatim per the summary tool).
+Kole Jain is a Canadian web/UI-UX designer and educator (channel: youtube.com/@KoleJain, personal site kolejain.com). Direct transcript fetching from YouTube itself failed (YouTube serves a JS-rendered shell to fetch tools), so the material below comes from third-party transcript summaries hosted on sozai.app (an AI transcription/note-taking service that publishes per-video transcript-and-summary pages). Each principle below is sourced to the specific sozai.app transcript page for a named video, with the underlying YouTube video linked for reference. These are AI-generated summaries of his spoken content, not his own written words. Everything below is therefore paraphrase of the ideas, in our wording; nothing is presented as a verbatim quote, because we could not verify the summaries against the original spoken transcript.
 
 **Video: "The 3 dashboard UI flaws that give away you've NEVER built one"**
 Source: https://sozai.app/transcript/dashboard-ui-flaws-never-built-one/ (video: https://www.youtube.com/watch?v=Ksx9C2-3yMo)
 
 - Let the data's actual shape drive layout: right-align numeric columns so digits line up by place value, and turn categorical fields into chips rather than plain text.
 - Do not expose every action at once; progressively reveal secondary actions (example given: removing a user from a share) through hover states or popovers instead of showing them by default.
-- Add tooltips for icons and ambiguous labels. Beginner dashboards almost always skip this "invisible UI" layer.
+- Add tooltips for icons and ambiguous labels; beginner dashboards almost always skip this invisible layer of UI.
 - Truncate long text in tables, align numbers, and use row shading or similar visual aids to make dense tables scannable.
 - Use color to encode data meaning (e.g., red for urgent), not as pure decoration.
 - Sequence onboarding: introduce functionality gradually with tooltips and checklists rather than loading the full interface on a new user on day one.
@@ -19,7 +19,7 @@ Source: https://sozai.app/transcript/dashboard-ui-flaws-never-built-one/ (video:
 **Video: "EVERYTHING you need to know to build a Dashboard UI in 8 minutes"**
 Source: https://sozai.app/transcript/build-dashboard-ui-beginner-guide/ (video: https://www.youtube.com/watch?v=B7k5rOgmOGY)
 
-- Treat the sidebar as "the spine of the product": navigation, profile, and search live there; order links by how often they're used, and push rarely-used items like settings to the bottom.
+- Treat the sidebar as the structural spine of the product: navigation, profile, and search live there; order links by how often they're used, and push rarely-used items like settings to the bottom.
 - Use a simple two-column, two-row grid for the main dashboard area; reserve the top region for the page's primary actions.
 - The main content area should reflect what the user actually cares about (project status for a PM tool, positions for a finance tool), not a generic layout.
 - Dashboards need tighter grid discipline and smaller type/spacing scales than marketing pages, because they must fit far more onto one screen.
@@ -40,7 +40,7 @@ Source: https://sozai.app/transcript/ui-ux-mistakes-beginner/ (video: https://ww
 - Use one consistent icon library throughout (mixed stroke widths/styles across icons is a giveaway), and label or add tooltips to any icon whose meaning isn't obvious.
 - Remove redundant UI that duplicates a function the interaction already provides (e.g., arrows next to a swipeable carousel).
 - Give every user action visible feedback: disable/gray out buttons while processing, show spinners for delays, fill/confirm icons on save, and use badges to confirm state changes. Silent state transitions feel broken.
-- Bonus mistake: over-designed charts. Prioritize legibility over decoration; keep axes visible and bars proportional. "Less visual noise equals a better design."
+- Bonus mistake: over-designed charts. Prioritize legibility over decoration; keep axes visible and bars proportional; less visual noise makes a better design.
 
 **Video: "Why the 60-30-10 Rule is RUINING Your UI Designs"**
 Source: https://sozai.app/transcript/60-30-10-rule-ruining-ui-designs/ (video: https://www.youtube.com/watch?v=66oOi9OLMCw)
@@ -55,7 +55,7 @@ Source: https://sozai.app/transcript/60-30-10-rule-ruining-ui-designs/ (video: h
 **Video: "Stop Making Pretty UIs. Think Like a Product Designer"**
 Source: https://sozai.app/transcript/stop-making-pretty-uis-think-product-designer/ (video: https://www.youtube.com/watch?v=HE4rLEQpiXY, per channel listing)
 
-- UI design is "decorating a single room"; product design is "the entire house: the flow, the function, the wiring, how it all connects." Design the system, not the screen.
+- His framing (paraphrased): UI design is decorating a single room, product design is the whole house, meaning the flow, the function, and how it all connects. Design the system, not the screen.
 - Explicitly design every state a user can land in, not just the happy path: empty states with guidance, loading indicators, success confirmations, and error messages that don't leave the user guessing.
 - Design for sequences of screens, not isolated screens: think about how a user arrives at a step and what small decision naturally follows (his example: prompt to add teammates right after workspace creation).
 - Consistency across spacing, typography, color, and components is what makes new screens feel instantly familiar; it does not require hundreds of components, just decisions you actually stick to.
@@ -76,14 +76,14 @@ Source: https://sozai.app/transcript/saas-ui-ux-mistakes-vibe-code/ (video: http
 This video is explicitly about AI/"vibe-coded" app output, so it is the single most directly relevant Kole Jain source for a code-generating agent.
 
 - Drop emojis as UI iconography in professional products; use a real icon library (he names Phosphor, Lucide).
-- "Never let an AI choose any of your colors" (quoted from summary): AI-generated palettes trend toward oversaturated, clashing color choices.
-- "Never let an AI choose your layout either": AI-generated layouts tend to repeat the same KPI three times and default to generic gradient-circle avatars instead of functional account cards, i.e., pattern-matched decoration over purpose-built UI.
+- Don't let an AI pick your colors unreviewed: AI-generated palettes trend toward oversaturated, clashing color choices.
+- Don't let an AI pick your layout unreviewed either: AI-generated layouts tend to repeat the same KPI three times and default to generic gradient-circle avatars instead of functional account cards, i.e., pattern-matched decoration over purpose-built UI.
 - Replace repetitive/duplicate KPI displays with real data visualizations and micro-charts.
 - Consolidate navigation: collapse secondary links into popovers, and combine settings/billing instead of spreading them across many top-level entries.
 - Simplify cards: collapse multiple buttons into a single triple-dot overflow menu; use icons instead of text chips where space is tight.
 - Use modals for dense, multi-field forms, with advanced/rare fields collapsed by default.
 - On pricing pages, avoid excessive plan counts (five tiers called out as too many), make discounts and the differentiator between tiers legible, and add trust-building billing detail.
-- Favor purpose-fit visualizations (e.g., a geospatial view for location data) over a generic bar chart, and add comparison/toggle affordances where they're cheap to add and high value ("low-hanging fruit").
+- Favor purpose-fit visualizations (e.g., a geospatial view for location data) over a generic bar chart, and add comparison/toggle affordances where they're cheap to add and high value.
 - On landing/marketing surfaces, use real product screenshots rather than generic icons to build credibility.
 
 ## 2. Nielsen Norman Group
@@ -183,21 +183,16 @@ Laws with clear, direct application to dashboards and navigation are marked; the
 
 ## 4. Refactoring UI (Wathan and Schoger)
 
-No official free full text is published by the authors; the points below are drawn from a third-party chapter-by-chapter summary. Source: https://howtoes.blog/2025/07/04/refactoring-ui-complete-book-summary-all-key-ideas/ (secondary summary, not the original book text; treat as paraphrase).
+Source: the ideas in "Refactoring UI" by Adam Wathan and Steve Schoger (refactoringui.com). The book is paid and has no official free full text; none of its text is reproduced here. The points below are the ideas from the book that fed rule candidates, restated in our own words at the level of concept, gathered from secondary coverage of the book rather than the original text. For the authors' actual treatment, buy the book.
 
 - Not every element deserves equal visual weight; most screens have one true primary action, a couple of secondary actions, and a few rarely used tertiary ones, and the design should communicate that ranking.
-- "Emphasize by de-emphasizing": push competing elements back (lower contrast, smaller, muted color) rather than making the primary element bigger and bigger; hierarchy is often better solved by turning things down than turning things up.
+- Create hierarchy by de-emphasizing competing elements (lower contrast, muted color) rather than making the primary element ever bigger; hierarchy is often better solved by turning things down than turning things up.
 - Don't rely on font size alone to create hierarchy; weight and color carry a lot of the signal too.
 - To de-emphasize secondary text, make it a softer color rather than shrinking it to the point of illegibility.
 - Use two to three text colors: dark for primary content, gray for secondary, lighter gray for tertiary; don't go below roughly 400 font-weight, lean on color and size instead.
-- Start a layout with more white space than feels necessary, then reduce it; most first drafts are too cramped.
 - Build a non-linear spacing scale (small steps cluster tightly at the low end, e.g. 4/8/12px; larger steps spread out, e.g. 24/32/48px) instead of one linear unit.
 - Space between groups of related elements should be visibly greater than the space within a group, so grouping reads clearly without needing borders.
-- Not everything needs to stretch full width; a deliberately constrained width often looks more considered.
 - Define a hand-picked (non-linear) type scale rather than a purely mathematical one, and keep paragraph measure to roughly 45-75 characters for readability.
-- Treat empty states as a priority design surface, not an afterthought.
-- Prefer spacing, background color, or subtle shadow over borders as the default way to separate content.
-- Start designing a single feature/flow, not the whole layout skeleton, and defer color/type/icon decisions until the structure is proven; iterate in short cycles against a working build rather than fully speccing everything up front.
 
 ## 5. Dashboard-specific literature (Stephen Few and modern takes)
 
@@ -252,13 +247,13 @@ Combines NN/g sources already cited above plus general IA framing.
 - A statistic attributed to "a 2025 Nielsen Norman Group analysis of 50 AI-generated dashboards" (92 percent missing empty states, 78 percent missing error states, 100 percent using a generic spinner) circulates on at least one third-party blog (blog.vibecoder.me) and is echoed in search-engine AI summaries, but I could not find this study on nngroup.com itself, nor any other primary citation for it. The blog post that states it provides no source link. I am treating this figure as unverified and possibly fabricated, and have not used it as a cited NN/g finding above.
 - Kole Jain's content: I could not fetch YouTube video pages or captions directly (YouTube serves a non-content shell to the fetch tool, and a third-party transcript site returned 403). All Kole Jain material above is sourced to sozai.app's AI-generated transcript-and-summary pages for specific named videos, not to Kole Jain's own written words or to YouTube directly. I was not able to verify these summaries against the original spoken transcript.
 - Stephen Few's "13 mistakes" list: the primary source PDF (perceptualedge.com whitepaper) could not be parsed as readable text by the fetch tool; the list above comes from a third-party (Medium) summary of the same material, not Few's original wording.
-- Refactoring UI: no free official full text exists; all points are from a third-party blog summary, not the book itself.
+- Refactoring UI: no official free full text exists; the points above are concept-level paraphrase gathered from secondary coverage of the book, not verified against the book's own text.
 
 ## Top 20 principles by impact for agent-generated UIs
 
 1. Never let generated color or layout choices go unreviewed; AI-picked palettes and layouts trend toward oversaturated colors and repeated/generic KPI blocks. (Kole Jain, sozai.app/transcript/saas-ui-ux-mistakes-vibe-code/)
 2. Design and implement empty, loading, and error states for every data view; a blank or perpetually-spinning container is a common, damaging default. (NN/G, nngroup.com/articles/empty-state-interface-design/)
-3. Show the single most important number or chart with clearly greater visual weight than everything else on the screen; don't give every metric equal size and color. (Refactoring UI summary; Von Restorff Effect, lawsofux.com)
+3. Show the single most important number or chart with clearly greater visual weight than everything else on the screen; don't give every metric equal size and color. (Refactoring UI, paraphrase; Von Restorff Effect, lawsofux.com)
 4. Pick chart type by the question being answered (trend, ranking, correlation, part-to-whole), not by whatever shape the data happens to be in. (Datawrapper chart guide; NN/G preattentive processing, nngroup.com/articles/dashboards-preattentive/)
 5. Use length and 2D position (bar/line/scatter) for quantitative comparison; avoid pie charts, gauges, and 3D charts for that purpose. (NN/G, nngroup.com/articles/dashboards-preattentive/)
 6. Keep navigation structurally identical across every page: same position, same order, same active-state logic. (NN/G heuristic #4, nngroup.com/articles/ten-usability-heuristics/)
@@ -270,7 +265,7 @@ Combines NN/g sources already cited above plus general IA framing.
 12. Always show the user's current location in navigation (active states, breadcrumbs). (NN/G, nngroup.com/articles/menu-design/)
 13. Give visible feedback for every user action (button states, spinners, confirmations, toasts); silent state transitions read as broken. (Kole Jain, sozai.app/transcript/ui-ux-mistakes-beginner/; NN/G heuristic #1, nngroup.com/articles/ten-usability-heuristics/)
 14. Design real states, not just the happy path: empty, loading, error, and success must all be considered up front. (Kole Jain, sozai.app/transcript/stop-making-pretty-uis-think-product-designer/)
-15. Group related elements with spacing and shared containers (proximity, common region), and make inter-group spacing clearly larger than intra-group spacing. (Refactoring UI summary; Laws of UX Gestalt laws, lawsofux.com)
+15. Group related elements with spacing and shared containers (proximity, common region), and make inter-group spacing clearly larger than intra-group spacing. (Refactoring UI, paraphrase; Laws of UX Gestalt laws, lawsofux.com)
 16. Add tooltips or labels for any icon or abbreviation whose meaning isn't obvious. (Kole Jain, sozai.app/transcript/dashboard-ui-flaws-never-built-one/; NN/G heuristic #6, nngroup.com/articles/ten-usability-heuristics/)
 17. Keep a small, consistent, purposeful color palette (roughly 6 working colors), with color reinforcing category or semantic meaning, never the sole carrier of meaning. (Stephen Few; NN/G, nngroup.com/articles/dashboards-preattentive/)
 18. Standardize component styling (one corner radius, one button scale, one icon set) across the whole app rather than per-screen improvisation. (Kole Jain, sozai.app/transcript/ui-ux-mistakes-beginner/)

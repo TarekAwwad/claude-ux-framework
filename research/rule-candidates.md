@@ -22,14 +22,14 @@ itself, not an external citation.
 | ID | Rule (imperative, one line) | Source | Agent failure? |
 |----|------------------------------|--------|----------------|
 | P1 | Do a UX pass before writing UI code: name the primary user, their top task, and every state this screen can be in. | findings-skills (before-generating gate); known failure mode | yes: agents jump straight to code and design only the happy path |
-| P2 | Give each screen exactly one primary action, styled at the highest contrast; secondary actions must read as visibly lower weight. | Refactoring UI (summary); known failure mode | yes: agents style multiple buttons at equal weight so nothing leads |
+| P2 | Give each screen exactly one primary action, styled at the highest contrast; secondary actions must read as visibly lower weight. | Refactoring UI (paraphrase); known failure mode | yes: agents style multiple buttons at equal weight so nothing leads |
 | P3 | Design and build empty, loading, error, and partial-data states for every data-backed view, not just the populated one. | NN/g empty-state; partial-data extension from design spec states matrix | yes: agents render only the populated view with mock data |
 | P4 | Give every user action visible feedback (disabled or pending button, spinner, toast, or confirmation); no silent state change. | Kole Jain beginner-mistakes (sozai); NN/g ten-heuristics | yes: agents wire actions with no pending or success feedback |
-| P5 | Establish one clear visual hierarchy: the most important element must differ in size, weight, or color from the rest. | Refactoring UI (summary); Laws of UX (Von Restorff) | yes: agents emit uniform grids where every element competes |
-| P6 | Create hierarchy by de-emphasizing competing elements (lower contrast, muted color), not by enlarging the primary one. | Refactoring UI (summary) | yes: agents scale the primary up instead of toning the rest down |
-| P7 | Use two or three text colors (dark primary, gray secondary, lighter tertiary) and keep body weight at roughly 400 or above. | Refactoring UI (summary) | yes: agents ship one flat text color or illegibly thin, pale text |
-| P8 | Make spacing between groups visibly larger than spacing within a group so grouping reads without borders. | Refactoring UI (summary); Laws of UX (Gestalt) | yes: agents use uniform gaps so related items do not separate |
-| P9 | Draw every margin and padding from a defined spacing scale (e.g. 4/8/12/16/24/32); no arbitrary one-off pixel values. | Refactoring UI (summary) | yes: agents emit ad hoc values like 13px or 27px |
+| P5 | Establish one clear visual hierarchy: the most important element must differ in size, weight, or color from the rest. | Refactoring UI (paraphrase); Laws of UX (Von Restorff) | yes: agents emit uniform grids where every element competes |
+| P6 | Create hierarchy by de-emphasizing competing elements (lower contrast, muted color), not by enlarging the primary one. | Refactoring UI (paraphrase) | yes: agents scale the primary up instead of toning the rest down |
+| P7 | Use two or three text colors (dark primary, gray secondary, lighter tertiary) and keep body weight at roughly 400 or above. | Refactoring UI (paraphrase) | yes: agents ship one flat text color or illegibly thin, pale text |
+| P8 | Make spacing between groups visibly larger than spacing within a group so grouping reads without borders. | Refactoring UI (paraphrase); Laws of UX (Gestalt) | yes: agents use uniform gaps so related items do not separate |
+| P9 | Draw every margin and padding from a defined spacing scale (e.g. 4/8/12/16/24/32); no arbitrary one-off pixel values. | Refactoring UI (paraphrase) | yes: agents emit ad hoc values like 13px or 27px |
 | P10 | Standardize one corner-radius value, one button-size scale, and one icon set across the whole UI; reuse tokens. | Kole Jain beginner-mistakes (sozai) | yes: agents improvise per component, mixing radii and icon styles |
 | P11 | Use a single icon library; never use emojis as UI iconography in a professional product. | Kole Jain vibe-code (sozai) | yes: agents reach for emojis as icons and status markers |
 | P12 | Give any icon-only control or abbreviation a visible text label or a tooltip. | Kole Jain dashboard-flaws (sozai); NN/g ten-heuristics | yes: agents ship icon-only buttons with no label or tooltip |
@@ -39,7 +39,7 @@ itself, not an external citation.
 | P16 | Remove anything that does not serve the primary task; every extra element competes with the important ones. | NN/g ten-heuristics | yes: agents pad screens with decorative filler and rarely-needed controls |
 | P17 | Guard destructive actions with an undo, cancel, or confirmation step rather than executing them irreversibly. | NN/g ten-heuristics | yes: agents wire delete and remove with no guard |
 | P18 | Write empty states and error messages as guidance (what happened, what to do next), not bare "No data" or raw error text. | NN/g empty-state | yes: agents emit generic "No results" or dump raw error strings |
-| P19 | Constrain paragraph and text-column width to roughly 45 to 75 characters. | Refactoring UI (summary) | yes: agents let text lines span the full viewport width |
+| P19 | Constrain paragraph and text-column width to roughly 45 to 75 characters. | Refactoring UI (paraphrase) | yes: agents let text lines span the full viewport width |
 | P20 | Reserve modals for focused multi-field tasks; use popovers or inline UI for lightweight, non-blocking interactions. | Kole Jain build-dashboard (sozai); Kole Jain vibe-code (sozai) | yes: agents overuse modals for trivial actions or cram dense forms into popovers |
 | P21 | Give every interactive element a visible keyboard focus state (focus-visible), not just a hover style. | known failure mode | yes: agents style hover only, or strip the default outline |
 
@@ -50,7 +50,7 @@ itself, not an external citation.
 | D1 | Before layout, write the plain-language questions the dashboard must answer, and design each section as the answer to one question. | uxpin dashboard-principles | yes: agents lay out a generic KPI grid with no question driving it |
 | D2 | Name the audience and the decision the dashboard drives; if no action follows from a metric, drop it. | NickCrew dashboard-designer; Stephen Few (summary) | yes: agents fill dashboards with vanity metrics that inform no decision |
 | D3 | Show a distinct, decision-relevant metric in each tile; do not repeat the same KPI card or add generic filler blocks. | Kole Jain vibe-code (sozai) | yes: agents duplicate near-identical stat cards to fill the grid |
-| D4 | Give the single most important metric clearly greater visual weight than the rest of the dashboard. | Refactoring UI (summary); Laws of UX (Von Restorff) | yes: agents render all KPI tiles identical |
+| D4 | Give the single most important metric clearly greater visual weight than the rest of the dashboard. | Refactoring UI (paraphrase); Laws of UX (Von Restorff) | yes: agents render all KPI tiles identical |
 | D5 | Limit headline KPIs on the primary view to roughly 5 to 7; push the rest behind drill-downs, filters, or secondary views. | uxpin dashboard-principles; Laws of UX (Miller) | yes: agents surface every available metric at once |
 | D6 | Give every number context (a target, benchmark, delta, or trend), not an isolated figure. | Stephen Few (summary) | yes: agents render bare numbers with no comparison |
 | D7 | Title each card as the insight or claim it answers ("Weekly signups vs target"), not a bare label ("Signups"). | uxpin dashboard-principles; NickCrew dashboard-designer | yes: agents title cards with the raw field name |

@@ -79,6 +79,15 @@ Issues and PRs welcome. Most useful right now: run audit mode on a real app
 and report where the checklist misses, and tell me which module you want
 next, forms or tables.
 
-## License
+## License and attribution
 
-[MIT](LICENSE)
+[MIT](LICENSE), covering the original content of this repo: the skill, the
+examples, the docs, and the wording of the research notes. The files under
+`research/` summarize and cite third-party sources (Nielsen Norman Group
+articles, Laws of UX, published books and videos). Those summaries are
+paraphrase with citation; the underlying works remain their authors' and are
+not relicensed by this repo.
+
+This is a community project. It is not affiliated with or endorsed by
+Anthropic. Claude is a trademark of Anthropic, used here only to describe
+compatibility with Claude Code.
