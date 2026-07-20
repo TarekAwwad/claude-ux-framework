@@ -12,12 +12,18 @@ named Ledgerline. The primary user is a startup founder checking business
 health each morning.
 
 Data contract: read <REPO>/validation/fixtures/data.json and hardcode
-exactly that data. Do not invent, rename, omit, or add data elements. The
-dashboard must present all of the following, and nothing outside the
-fixture: (1) MRR and its 13-month history; (2) monthly churn rate and its
-history; (3) weekly active users and its history; (4) the feature adoption
-percentages for all 7 listed features; (5) the recent signups list, with
-all six fields for all 14 rows reachable in the UI.
+exactly that data. Do not invent, rename, omit, or add data elements. Every
+one of the following must be reachable in the rendered UI (visible
+directly, or behind a visible control such as a tab, toggle, filter, or
+scroll; never only in source or comments): (1) MRR and its 13-month
+history; (2) monthly churn rate and its history; (3) weekly active users
+and its history; (4) the feature adoption percentages for all 7 listed
+features; (5) the recent signups list, with all six fields for all 14
+rows. Consolidating views (for example one chart with a series switcher)
+is allowed as long as everything stays reachable.
+
+Theme: default to a light theme. A dark theme is optional; if you build
+one, honor prefers-color-scheme.
 
 Apart from the fixture file (and any files your instructions above require),
 do not read other files from <REPO>.

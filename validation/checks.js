@@ -62,11 +62,33 @@ async function checkBuild(browser, dirArg) {
   const searchInputs = await page.locator('input[type="search"], input[placeholder*="earch"], input[aria-label*="earch" i]').count();
   add('TABLE-search', searchInputs > 0, searchInputs + ' search input(s) found');
 
-  const sortable = await page.locator('th button, th[aria-sort], [role="columnheader"][aria-sort]').count();
-  add('TABLE-sortable', sortable > 0, sortable + ' sortable header control(s) found');
+  const sortable = await page.evaluate(() =>
+    document.querySelectorAll('th button, th[aria-sort], [role="columnheader"][aria-sort]').length ||
+    [...document.querySelectorAll('th')].filter(h => h.onclick || getComputedStyle(h).cursor === 'pointer').length);
+  add('TABLE-sortable', sortable > 0, sortable + ' sortable header control(s) found (bare th-click sorting counts but is mouse-only; check keyboard access manually)');
 
-  const filters = await page.locator('select, [role="combobox"]').count();
-  add('TABLE-filter-controls', filters > 0, filters + ' select/combobox control(s) found (may include demo controls; verify manually)');
+  const filters = await page.locator('select, [role="combobox"], button[aria-pressed], [role="tab"]').count();
+  add('TABLE-filter-controls', filters > 0, filters + ' filter-capable control(s) found (selects, chips, tabs; may include demo controls; verify manually)');
+
+  // Reachability probe: series values must appear in rendered text, either
+  // immediately or after clicking visible controls (tabs/switchers).
+  const probeVals = [FIXTURE.churn_pct[0].toFixed(1), String(FIXTURE.weekly_active_users[3])];
+  const reach = await page.evaluate(async (vals) => {
+    const textHas = v => document.body.innerText.replace(/[, ]/g, '').includes(v.replace(/[,]/g, ''));
+    const missing = () => vals.filter(v => !textHas(v));
+    if (!missing().length) return { ok: true, how: 'visible on load' };
+    const ctrls = [...document.querySelectorAll('button, [role="tab"]')].slice(0, 40);
+    for (const c of ctrls) {
+      c.click();
+      await new Promise(r => setTimeout(r, 150));
+      if (!missing().length) return { ok: true, how: 'reachable via control "' + (c.textContent || '').trim().slice(0, 30) + '"' };
+    }
+    return { ok: false, how: 'still missing after clicking controls: ' + missing().join(', ') };
+  }, probeVals);
+  add('DATA-series-reachable', reach.ok, 'churn/WAU probe values ' + reach.how +
+    (reach.ok ? '' : ' (hover-only tooltips are invisible to this probe; verify by hand before scoring it a failure)'));
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
 
   // ---- rendered checks, narrow 375px ----
   await page.setViewportSize({ width: 375, height: 900 });

@@ -48,8 +48,14 @@ the prompts were not recorded, and scoring leaned on static screenshots
       skills/ux-framework/references/audit-checklist.md, reading code and
       interacting with the page for anything a screenshot cannot show.
       Record per-check verdicts in `runs/<date>/scorecard.md`.
-6. Only after scoring: capture screenshots for documentation.
-7. Publishing: every run that was scored gets reported. If more than one
+6. Only after scoring: capture screenshots for documentation. Any
+   side-by-side comparison image must render both builds in the same
+   forced color scheme (Playwright colorScheme option), light unless
+   there is a reason otherwise.
+7. Prompt or fixture changes version the suite: note the suite commit in
+   run.md (already required) and never compare scores across runs made
+   with different prompt wording without saying so.
+8. Publishing: every run that was scored gets reported. If more than one
    round was run, docs/validation.md reports all of them, including
    retracted findings; no picking the best run without saying so.
 
