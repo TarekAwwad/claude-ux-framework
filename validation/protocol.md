@@ -15,7 +15,8 @@ the prompts were not recorded, and scoring leaned on static screenshots
    prompts/common-body.md. The with-skill agent additionally gets the
    preamble in prompts/with-skill.md. That preamble is the entire
    experimental variable.
-2. Pinned data and style. fixtures/data.json is the single source of data
+2. Pinned data and style. The scenario's fixture (see Scenarios) is the
+   single source of data
    and fixtures/tokens.css the single source of visual style (palette,
    font, radius, shadow, spacing scale). Both builds must hardcode the
    data and inline the tokens verbatim, and the automated checks verify
@@ -33,6 +34,22 @@ the prompts were not recorded, and scoring leaned on static screenshots
    browser and read the source. Static screenshots are captured last, for
    documentation, never as scoring evidence for responsive or motion
    behavior.
+
+## Scenarios
+
+The suite has two scenarios. Each is a (common body, fixture) pair; both
+share tokens.css and the preambles in prompts/.
+
+- dashboard: prompts/common-body.md + fixtures/data.json
+- tables: prompts/tables-common-body.md + fixtures/tables-data.json
+
+checks.js takes `--scenario=<name>` (default dashboard). A run directory
+holds exactly one scenario; name tables run directories
+`runs/<date>-tables/` (and `runs/<date>-tables-diag/` for diagnostic
+runs, see below). A diagnostic run is a single-sided no-skill build used
+to source rules; it is never reported as a scored pair, and any published
+pair whose rules were partly sourced from a diagnostic of the same
+scenario must say so in its run log.
 
 ## Running a round
 

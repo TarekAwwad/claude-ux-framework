@@ -1,7 +1,8 @@
 # With-skill prompt
 
-The with-skill agent receives this preamble, then the body from
-common-body.md, verbatim, with placeholders substituted.
+The with-skill agent receives this preamble, then the scenario's body
+(common-body.md for the dashboard scenario, tables-common-body.md for the
+tables scenario), verbatim, with placeholders substituted.
 
 ---
 
