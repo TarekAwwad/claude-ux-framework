@@ -1,0 +1,97 @@
+{
+  "dir": "D:\\Code\\Claude-UX-skill-creator\\validation\\runs\\2026-07-21-tables\\baseline",
+  "scenario": "tables",
+  "when": "2026-07-21T09:40:07.334Z",
+  "results": [
+    {
+      "id": "DATA-companies",
+      "pass": true,
+      "detail": "all 400 account names present in source"
+    },
+    {
+      "id": "DATA-owners",
+      "pass": true,
+      "detail": "all owner names present in source"
+    },
+    {
+      "id": "STYLE-tokens-inlined",
+      "pass": true,
+      "detail": "token block present verbatim (probed)"
+    },
+    {
+      "id": "STYLE-no-foreign-colors",
+      "pass": true,
+      "detail": "every hex literal is a token value"
+    },
+    {
+      "id": "A11Y-focus-visible",
+      "pass": true,
+      "detail": "focus-visible styling in CSS"
+    },
+    {
+      "id": "A11Y-reduced-motion",
+      "pass": true,
+      "detail": "no animation, guard not required"
+    },
+    {
+      "id": "CRAFT-no-transition-all",
+      "pass": true,
+      "detail": "no `transition: all`"
+    },
+    {
+      "id": "CRAFT-no-emoji-icons",
+      "pass": true,
+      "detail": "no emoji in markup"
+    },
+    {
+      "id": "RUNTIME-no-errors",
+      "pass": true,
+      "detail": "no console/page errors"
+    },
+    {
+      "id": "GRID-windowed-rows",
+      "pass": true,
+      "detail": "50 row elements in DOM for 400 accounts (paged, load-more, or virtualized)"
+    },
+    {
+      "id": "TABLE-search",
+      "pass": true,
+      "detail": "1 search input(s) found"
+    },
+    {
+      "id": "TABLE-sortable",
+      "pass": true,
+      "detail": "1 sortable header control(s) found (bare th-click sorting counts but is mouse-only; check keyboard access manually)"
+    },
+    {
+      "id": "TABLE-filter-controls",
+      "pass": true,
+      "detail": "10 filter-capable control(s) found (selects, chips, tabs; may include demo controls; verify manually)"
+    },
+    {
+      "id": "DATA-rows-reachable",
+      "pass": true,
+      "detail": "Atlasgrove Legal: visible on load; Gablewood Print: via search; Gablewood Media: via search"
+    },
+    {
+      "id": "STATE-empty-search",
+      "pass": true,
+      "detail": "zero-result search shows a guidance message"
+    },
+    {
+      "id": "GRID-selection",
+      "pass": true,
+      "detail": "50 row-selection affordance(s) found (checkboxes or aria-selected rows)"
+    },
+    {
+      "id": "GRID-destructive-guard",
+      "pass": false,
+      "detail": "no remove/delete/archive control found by probe (may be behind a row menu; verify manually)"
+    },
+    {
+      "id": "RESP-columns-survive",
+      "pass": true,
+      "detail": "ok(10 cols, scrolls)"
+    }
+  ]
+}

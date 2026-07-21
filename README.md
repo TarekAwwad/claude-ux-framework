@@ -52,8 +52,8 @@ Both builds, the UX spec the skill produced, and the capture script are in
 **Build mode.** Before any UI code, the agent writes a short UX spec (who the
 user is, their top tasks, where the screen sits in the app, a states matrix).
 It then loads the reference module matching the UI type (dashboards,
-navigation), builds, and self-audits against a checklist before declaring
-done.
+navigation, tables and data grids), builds, and self-audits against a
+checklist before declaring done.
 
 **Audit mode.** Ask for a UX review of an existing app and the agent
 inventories screens and flows, looks at the rendered UI where possible, and
@@ -76,7 +76,8 @@ Then copy or link `skills/ux-framework/` into your skills directory:
 ## Scope
 
 Web apps, stack-agnostic. v1 modules: dashboards and data-heavy UIs,
-navigation and app shell. Forms and tables are planned as future modules.
+navigation and app shell, tables and data grids. Forms is planned as a
+future module.
 
 ## Repo layout
 

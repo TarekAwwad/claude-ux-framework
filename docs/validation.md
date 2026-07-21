@@ -2,7 +2,7 @@
 
 The skill's effect is measured by building the same dashboard twice, one
 agent with the skill and one without, and scoring both against the skill's
-30-check audit checklist. Since 2026-07-20 this runs under a reproducible
+40-check audit checklist. Since 2026-07-20 this runs under a reproducible
 suite ([../validation/](../validation/)): symmetric prompts whose only
 difference is the skill preamble, a pinned fixture dataset both builds
 must hardcode verbatim, a pinned design-token file both builds must style
@@ -38,6 +38,35 @@ compounding", "Recent signups: 5 open trials, 1 churned") versus bare
 labels, year-ago context on every KPI, a follow-up framing that turns the
 signups table into an action list, and working search, filters, and
 keyboard-accessible sorting.
+
+## Tables scenario: run 2026-07-21-tables
+
+This run scores a different scenario: a 400-account customer grid for a
+B2B SaaS product (Ledgerline), not the dashboard used in the published
+pair above. It runs under the same reproducible suite: the same pinned
+fixture data, the same pinned design tokens, and prompts identical except
+for the skill preamble.
+
+| Build | Blocker | Major | Minor |
+|-------|---------|-------|-------|
+| Baseline | 1 | 4 | 2 |
+| With-skill | 0 | 1 | 0 |
+
+The with-skill build ships a real loading skeleton and a parse-error state
+with Retry where the baseline has neither (C1, the run's only blocker); it
+freezes the Company column and wraps the scroll region in a focusable,
+labeled role=region where the baseline lets the column scroll off screen
+and leaves the container unlabeled (C34, C40); and its sort headers and
+detail panel manage focus where the baseline moves none and cannot be
+sorted by keyboard at all (C36). This is not a clean sweep: the with-skill
+build still fails C39, showing its Clear filters control on a fresh load
+with no filter set, because a CSS specificity bug (`.btn { display:
+inline-flex }`) overrides the `[hidden]` attribute meant to hide it.
+
+The tables rules were partly sourced from a no-skill diagnostic run on
+this same scenario (published in validation-runs/2026-07-20-tables-diag/).
+That makes the scenario a favorable test for the skill, and the number to
+weight accordingly; the baseline agent in the scored pair was fresh.
 
 ## All runs
 
