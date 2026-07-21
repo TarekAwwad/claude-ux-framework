@@ -43,9 +43,10 @@ keyboard-accessible sorting.
 
 This run scores a different scenario: a 400-account customer grid for a
 B2B SaaS product (Ledgerline), not the dashboard used in the published
-pair above. It runs under the same reproducible suite: the same pinned
-fixture data, the same pinned design tokens, and prompts identical except
-for the skill preamble.
+pair above. It runs under the same reproducible suite: the same
+pinned-data discipline (each scenario pins its own fixture: data.json for
+the dashboard, tables-data.json here), the same pinned design tokens, and
+prompts identical except for the skill preamble.
 
 | Build | Blocker | Major | Minor |
 |-------|---------|-------|-------|
@@ -76,27 +77,29 @@ weight accordingly; the baseline agent in the scored pair was fresh.
 | 2026-07-20 | v1 | 1 / 3 / 3 | 0 / 0 / 0 | first suite run, pinned data |
 | 2026-07-20b | v2 | 1 / 3 / 3 | 0 / 0 / 1 | reachability + theme pinned; with-skill dinged for an undeclared spacing scale |
 | 2026-07-20c | v4 | 1 / 2 / 1 | 0 / 0 / 0 | design tokens pinned; published pair |
+| 2026-07-21-tables | tables v1 | 1 / 4 / 2 | 0 / 1 / 0 | different scenario (customer table, not the dashboard); see the Tables scenario section above for its diagnostic-sourcing disclosure |
 
 Scores across rows are not strictly comparable (the prompt wording
 evolved between runs, and the token fixture in v4 pre-solves checks that
 v1 baselines could fail); within each row the comparison is same-day,
 same-prompt, same-environment.
 
-## What persists across every run
+## What persists across every dashboard-scenario run
 
 The baseline improved run over run (later baselines picked up
 focus-visible styling, and the token fixture gave them spacing
-discipline for free). Five deltas survived every run regardless of prompt
-wording or style constraints:
+discipline for free). Five deltas survived every dashboard-scenario run
+regardless of prompt wording or style constraints:
 
-1. State handling: every baseline shipped zero empty, loading, error, or
-   partial handling; every with-skill build implemented all of them.
-2. Table affordances: no baseline table had search, filter, and working
-   sort together; every with-skill table did.
-3. Responsive containment: two of three baselines shipped page-level
-   horizontal overflow at phone width; every with-skill build contained
-   scrolling (in run c, after its own verification pass caught and fixed
-   exactly that bug).
+1. State handling: every dashboard baseline shipped zero empty, loading,
+   error, or partial handling; every with-skill build implemented all of
+   them.
+2. Table affordances: no dashboard baseline table had search, filter, and
+   working sort together; every with-skill table did.
+3. Responsive containment: two of the three dashboard baselines shipped
+   page-level horizontal overflow at phone width; every with-skill build
+   contained scrolling (in run c, after its own verification pass caught
+   and fixed exactly that bug).
 4. Insight framing: baselines title cards with field names; with-skill
    builds title them with the finding and carry context (targets,
    year-ago comparisons) on every number.

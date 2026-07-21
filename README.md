@@ -21,19 +21,20 @@ supervising session, in code and by interaction. Because the palette,
 type, and spacing are fixed, the two builds look like the same product,
 and what differs is design judgment, which is the thing being measured.
 
-Latest run (the pair shown above, shipped in [examples/](examples/)):
+The published example pair (shown above, shipped in [examples/](examples/)):
 
 | | Blocker | Major | Minor |
 |---|---|---|---|
 | Without the skill | 1 | 2 | 1 |
 | With the skill | 0 | 0 | 0 |
 
-The deltas that persisted across every run of the test, not just this
-one: state handling (every baseline shipped zero empty, loading, error,
-or partial handling), table affordances (search, filter, sort),
-responsive containment (two of three baselines overflow the page at
-phone width), insight framing, and keyboard access. The reproducible
-suite, all run logs, retracted findings included, and the caveats are in
+The deltas that persisted across every dashboard-scenario run of the
+test, not just this one: state handling (every dashboard baseline
+shipped zero empty, loading, error, or partial handling), table
+affordances (search, filter, sort), responsive containment (two of the
+three dashboard baselines overflow the page at phone width), insight
+framing, and keyboard access. The reproducible suite, all run logs,
+retracted findings included, and the caveats are in
 [docs/validation.md](docs/validation.md).
 
 The blocker is the difference users hit first. The baseline renders the

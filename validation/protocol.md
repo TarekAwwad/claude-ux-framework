@@ -11,10 +11,10 @@ the prompts were not recorded, and scoring leaned on static screenshots
 
 ## Design rules
 
-1. Symmetric prompts. Both agents get the byte-identical body in
-   prompts/common-body.md. The with-skill agent additionally gets the
-   preamble in prompts/with-skill.md. That preamble is the entire
-   experimental variable.
+1. Symmetric prompts. Both agents get the byte-identical body in the
+   scenario's common-body file (see Scenarios). The with-skill agent
+   additionally gets the preamble in prompts/with-skill.md. That preamble
+   is the entire experimental variable.
 2. Pinned data and style. The scenario's fixture (see Scenarios) is the
    single source of data
    and fixtures/tokens.css the single source of visual style (palette,
@@ -60,13 +60,15 @@ scenario must say so in its run log.
    the skill's claimed delta).
 2. Create `runs/<date>/baseline/` and `runs/<date>/with-skill/`.
 3. Compose the two prompts: substitute `<REPO>` with the repo root and
-   `<OUTPUT_DIR>` with the respective run subdirectory. Baseline = common
-   body only. With-skill = preamble, then the common body.
+   `<OUTPUT_DIR>` with the respective run subdirectory. Baseline = the
+   scenario's common body only. With-skill = preamble, then the
+   scenario's common body.
 4. Launch both subagents in parallel, one prompt each. Store both composed
    prompts verbatim in `runs/<date>/run.md`.
 5. Score, in this order:
-   a. `node checks.js runs/<date>/baseline runs/<date>/with-skill`
-      (objective subset; writes checks-report.json into each build dir).
+   a. `node checks.js runs/<date>/baseline runs/<date>/with-skill
+      [--scenario=<name>]` (objective subset; writes checks-report.json
+      into each build dir).
    b. Manual audit of both builds against every check in
       skills/ux-framework/references/audit-checklist.md, reading code and
       interacting with the page for anything a screenshot cannot show.
