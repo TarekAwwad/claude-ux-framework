@@ -1,6 +1,6 @@
 ---
 name: ux-framework
-description: Use when creating or modifying any web UI (pages, dashboards, navigation, multi-screen features) or when asked to review/audit an app's UX. Enforces a UX pass before UI code and provides audit checklists. Not for single-component styling tweaks.
+description: Use when creating or modifying any web UI (pages, dashboards, data tables and grids, navigation, multi-screen features) or when asked to review/audit an app's UX. Enforces a UX pass before UI code and provides audit checklists. Not for single-component styling tweaks.
 ---
 
 # ux-framework
@@ -35,6 +35,7 @@ references/audit-checklist.md. Deliver findings in its report format.
 | Work involves | Also load |
 |---------------|-----------|
 | dashboard, analytics, monitoring, reports, charts, KPIs | references/dashboards.md |
+| data table, data grid, record list, admin or CRUD screen, bulk editing | references/tables.md |
 | app shell, nav, sidebar, menu, IA, new pages, multi-screen flows | references/navigation.md |
 | anything else UI | references/principles.md only |
 

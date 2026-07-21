@@ -56,10 +56,9 @@ cut any metric no decision depends on.
 
 ## Drill-down and filtering
 
-- Give every data table functional search, filter, and sort, not static
-  rows. <!-- D13 -->
-- Progressively reveal secondary and row-level actions (hover, overflow menu,
-  popover) instead of showing them all at once. <!-- D17 -->
+Every data table on a dashboard follows the tables module: load
+references/tables.md alongside this file. Its rules (including D11, D12,
+D13, D14, and D17, which moved there) apply per table.
 
 ## Data states
 
@@ -89,9 +88,3 @@ meaning and never decoration <!-- D20 -->.
 
 - Use tighter grid, type, and spacing scales than a marketing page; a
   dashboard packs more onto one screen. <!-- D16 -->
-- Right-align numeric table columns so digits line up by place value;
-  left-align text columns. <!-- D11 -->
-- Render categorical or status fields as chips or badges, not plain
-  text. <!-- D12 -->
-- Truncate long cell text and use row shading or dividers to keep dense tables
-  scannable. <!-- D14 -->
