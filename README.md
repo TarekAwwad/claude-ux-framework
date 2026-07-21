@@ -16,7 +16,7 @@ fixes that with an enforced process, not a rulebook.
 Two agents get byte-identical prompts, a pinned dataset both must
 hardcode verbatim, and a pinned design-token file both must style from.
 The only difference is that one agent is told to follow this skill. Both
-outputs are scored against the skill's 30-check audit checklist, by the
+outputs are scored against the skill's 40-check audit checklist, by the
 supervising session, in code and by interaction. Because the palette,
 type, and spacing are fixed, the two builds look like the same product,
 and what differs is design judgment, which is the thing being measured.
@@ -90,8 +90,8 @@ future module.
 ## Contributing
 
 Issues and PRs welcome. Most useful right now: run audit mode on a real app
-and report where the checklist misses, and tell me which module you want
-next, forms or tables.
+and report where the checklist misses. Forms and wizards is the next
+planned module.
 
 ## License and attribution
 
