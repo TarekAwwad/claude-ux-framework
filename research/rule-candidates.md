@@ -81,7 +81,7 @@ checks C21 and C23 still derive from them; dashboards.md keeps a pointer.
 D11, D12, D13, D14, and D17 also render in references/tables.md and are
 listed only in the D table above; this section holds the net-new rules.
 Rows citing "observed in diagnostic run 2026-07-20-tables-diag (diag-n)" refer
-to validation runs/2026-07-20-tables-diag/diagnostic-notes.md, published under
+to validation/runs/2026-07-20-tables-diag/diagnostic-notes.md, published under
 docs/validation-runs/.
 
 | ID | Rule (imperative, one line) | Source | Agent failure? |
