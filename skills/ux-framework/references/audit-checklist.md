@@ -62,6 +62,19 @@ it with friction or confusion), MINOR (polish).
 - C23 (MINOR): Are numeric table columns right-aligned and categorical fields shown as chips?
 - C24 (MINOR): Is each card titled as the insight it answers rather than a bare field label?
 
+## Checks: tables and data grids (apply to any data table)
+
+- C31 (MAJOR): Are table columns ordered by importance with compared columns adjacent, and is the first column a human-readable identifier rather than a raw generated ID?
+- C32 (MINOR): Are units and shared qualifiers placed in the column header instead of every cell, and are identifier-like numbers (IDs, dates, postal or phone codes) left-aligned as text rather than right-aligned as quantities?
+- C33 (MAJOR): Are large datasets paged or virtualized (paginate past roughly 50 rows, virtualize once the count grows large) rather than rendering every row into the DOM at once?
+- C34 (MAJOR): Does the header row stay visible during vertical scroll, and does the leftmost identifier column stay frozen during horizontal scroll, so row and column labels remain in view?
+- C35 (MAJOR): Does a row's detail open in a non-modal side panel or an expandable inline row that keeps the rest of the table visible, rather than a modal or separate page that covers the rows being compared?
+- C36 (MAJOR): After a sort, page, or filter re-renders the table, is keyboard focus restored to the acted-on control, and when a row opens a detail panel is focus moved into it and returned to the triggering row on close (trapped with the background inert if the panel is a full-screen overlay)?
+- C37 (MAJOR): Do editable cells signal that they are editable, confirm each edit explicitly (Enter, click-away, or Save) with clear success feedback, and route high-stakes edits to a panel or modal rather than inline?
+- C38 (MAJOR): Do native HTML5 input constraints (min, max, required, pattern) leave the app's own inline validation reachable, so the designed error messages still run for every invalid value?
+- C39 (MAJOR): Does the table distinguish an empty result caused by no data yet from one caused by no rows matching the current filter, offering a clear-filters action only when a filter is actually set?
+- C40 (MAJOR): When a table scrolls horizontally on a narrow viewport, is the scroll container a keyboard-focusable labeled region (role=region, aria-labelledby to the caption, tabindex=0, visible focus) that signals content continues off-screen?
+
 ## Report format
 
 For each failed check:

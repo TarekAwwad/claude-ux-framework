@@ -155,6 +155,16 @@ note marks checks where a yes answer is the defect.
 | C26 | Does the nav always indicate the user's current location (active state or breadcrumbs)? | N2, N7 | MAJOR |
 | C27 | Does the nav model fit the IA (sidebar for 7+ sections or enterprise, no desktop hamburger, text labels not icon-only)? | N3, N4, N5 | MAJOR |
 | C28 | Are nav items ordered by frequency of use and sized to the product's actual structure, not alphabetized or padded? | N6, N10 | MINOR |
+| C31 | Are table columns ordered by importance with compared columns adjacent, and is the first column a human-readable identifier rather than a raw generated ID? | T2 | MAJOR |
+| C32 | Are units and shared qualifiers placed in the column header instead of every cell, and are identifier-like numbers (IDs, dates, postal or phone codes) left-aligned as text rather than right-aligned as quantities? | T3 | MINOR |
+| C33 | Are large datasets paged or virtualized (paginate past roughly 50 rows, virtualize once the count grows large) rather than rendering every row into the DOM at once? | T5 | MAJOR |
+| C34 | Does the header row stay visible during vertical scroll, and does the leftmost identifier column stay frozen during horizontal scroll, so row and column labels remain in view? | T4 | MAJOR |
+| C35 | Does a row's detail open in a non-modal side panel or an expandable inline row that keeps the rest of the table visible, rather than a modal or separate page that covers the rows being compared? | T6 | MAJOR |
+| C36 | After a sort, page, or filter re-renders the table, is keyboard focus restored to the acted-on control, and when a row opens a detail panel is focus moved into it and returned to the triggering row on close (trapped with the background inert if the panel is a full-screen overlay)? | T12, T13 | MAJOR |
+| C37 | Do editable cells signal that they are editable, confirm each edit explicitly (Enter, click-away, or Save) with clear success feedback, and route high-stakes edits to a panel or modal rather than inline? | T7 | MAJOR |
+| C38 | Do native HTML5 input constraints (min, max, required, pattern) leave the app's own inline validation reachable, so the designed error messages still run for every invalid value? | T11 | MAJOR |
+| C39 | Does the table distinguish an empty result caused by no data yet from one caused by no rows matching the current filter, offering a clear-filters action only when a filter is actually set? | T10 | MAJOR |
+| C40 | When a table scrolls horizontally on a narrow viewport, is the scroll container a keyboard-focusable labeled region (role=region, aria-labelledby to the caption, tabindex=0, visible focus) that signals content continues off-screen? | T14 | MAJOR |
 
 ## Cut (model already does this reliably)
 
