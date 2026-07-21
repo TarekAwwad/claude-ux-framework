@@ -1,5 +1,5 @@
 // Automated objective checks for a with/without validation run.
-// Usage: node checks.js [--scenario=dashboard|tables] <buildDir> [<buildDir> ...]
+// Usage: node checks.js [--scenario=dashboard|tables|full] <buildDir> [<buildDir> ...]
 // Each buildDir must contain index.html. Needs Node + Playwright + Chrome
 // (same setup as examples/shots.js). Writes checks-report.json into each
 // buildDir and prints a summary table.
@@ -72,50 +72,14 @@ async function narrowTableCheck(page, add) {
     narrow.length ? tableVerdicts.join('; ') : 'no <table> found (verify manually)');
 }
 
-async function checkDashboardBuild(browser, dirArg, FIXTURE) {
-  const dir = path.resolve(dirArg);
-  const file = path.join(dir, 'index.html');
-  const src = fs.readFileSync(file, 'utf8');
-  const url = 'file:///' + file.replace(/\\/g, '/');
-  const results = [];
-  const add = (id, pass, detail) => results.push({ id, pass, detail });
-
-  // ---- source-level checks ----
-  const companies = FIXTURE.recent_signups.map(s => s.company);
-  const missingCompanies = companies.filter(c => !src.includes(c.replace(/&/g, '&').split('&')[0].trim()) && !src.includes(c));
-  add('DATA-companies', missingCompanies.length === 0,
-    missingCompanies.length ? 'missing: ' + missingCompanies.join(', ') : 'all 14 signup companies present in source');
-
-  const features = FIXTURE.feature_adoption_pct.map(f => f.feature);
-  const missingFeatures = features.filter(f => !src.includes(f));
-  add('DATA-features', missingFeatures.length === 0,
-    missingFeatures.length ? 'missing: ' + missingFeatures.join(', ') : 'all 7 features present in source');
-
-  const seriesProbe = [String(FIXTURE.mrr_usd[0]), String(FIXTURE.mrr_usd[12]), String(FIXTURE.weekly_active_users[0])];
-  const missingSeries = seriesProbe.filter(v => !src.includes(v));
-  add('DATA-series', missingSeries.length === 0,
-    missingSeries.length ? 'probe values absent: ' + missingSeries.join(', ') : 'history series values present');
-
-  sharedSourceChecks(src, add);
-
-  // ---- rendered checks, desktop ----
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await ctx.newPage();
-  const errors = [];
-  page.on('pageerror', e => errors.push(String(e)));
-  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(1500); // let any boot/loading sequence settle
-
-  add('RUNTIME-no-errors', errors.length === 0, errors.length ? errors.slice(0, 3).join(' | ') : 'no console/page errors');
-
-  await tableControlChecks(page, add);
-
-  // Reachability probe: series values must appear in rendered text, either
-  // immediately or after clicking visible controls (tabs/switchers).
+// Dashboard reachability probe: series values must appear in rendered text,
+// either immediately or after clicking visible controls (tabs/switchers).
+// Extracted so both the dashboard scenario and the full scenario call the
+// identical probe. Ends by reloading to a fresh desktop load.
+async function dashboardReachProbe(page, FIXTURE, add) {
   const probeVals = [FIXTURE.churn_pct[0].toFixed(1), String(FIXTURE.weekly_active_users[3])];
   const reach = await page.evaluate(async (vals) => {
-    const textHas = v => document.body.innerText.replace(/[, ]/g, '').includes(v.replace(/[,]/g, ''));
+    const textHas = v => document.body.innerText.replace(/[,\s ]/g, '').includes(v.replace(/[,]/g, ''));
     const missing = () => vals.filter(v => !textHas(v));
     if (!missing().length) return { ok: true, how: 'visible on load' };
     const ctrls = [...document.querySelectorAll('button, [role="tab"]')].slice(0, 40);
@@ -130,49 +94,14 @@ async function checkDashboardBuild(browser, dirArg, FIXTURE) {
     (reach.ok ? '' : ' (hover-only tooltips are invisible to this probe; verify by hand before scoring it a failure)'));
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
-
-  // ---- rendered checks, narrow 375px ----
-  await narrowTableCheck(page, add);
-
-  await ctx.close();
-  fs.writeFileSync(path.join(dir, 'checks-report.json'), JSON.stringify({ dir, scenario: 'dashboard', when: new Date().toISOString(), results }, null, 2));
-  return results;
 }
 
-async function checkTablesBuild(browser, dirArg, FIXTURE) {
-  const dir = path.resolve(dirArg);
-  const file = path.join(dir, 'index.html');
-  const src = fs.readFileSync(file, 'utf8');
-  const url = 'file:///' + file.replace(/\\/g, '/');
-  const results = [];
-  const add = (id, pass, detail) => results.push({ id, pass, detail });
-  const accounts = FIXTURE.accounts;
-
-  // ---- source-level checks ----
-  const missingCompanies = accounts.map(a => a.company).filter(c => !src.includes(c));
-  add('DATA-companies', missingCompanies.length === 0,
-    missingCompanies.length
-      ? missingCompanies.length + ' of ' + accounts.length + ' account names missing from source, e.g. ' + missingCompanies.slice(0, 3).join(', ')
-      : 'all ' + accounts.length + ' account names present in source');
-
-  const owners = [...new Set(accounts.map(a => a.owner))];
-  const missingOwners = owners.filter(o => !src.includes(o));
-  add('DATA-owners', missingOwners.length === 0,
-    missingOwners.length ? missingOwners.length + ' owner name(s) missing, e.g. ' + missingOwners.slice(0, 3).join(', ') : 'all owner names present in source');
-
-  sharedSourceChecks(src, add);
-
-  // ---- rendered checks, desktop ----
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await ctx.newPage();
-  const errors = [];
-  page.on('pageerror', e => errors.push(String(e)));
-  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-  await page.goto(url, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(1500);
-
-  add('RUNTIME-no-errors', errors.length === 0, errors.length ? errors.slice(0, 3).join(' | ') : 'no console/page errors');
-
+// Tables-specific rendered probes: DOM windowing, row reachability, empty
+// search state, bulk selection, and the destructive-action guard. Extracted
+// verbatim from the tables scenario so both it and the full scenario run the
+// identical probes. Assumes tableControlChecks() has already run separately.
+// Leaves the page on a fresh desktop load.
+async function tablesGridProbes(page, accounts, add) {
   // Windowing: a 400-row dataset should not be 400 DOM rows on load.
   const domRows = await page.evaluate(() => {
     const t = document.querySelectorAll('tbody tr').length;
@@ -184,8 +113,6 @@ async function checkTablesBuild(browser, dirArg, FIXTURE) {
     domRows + ' row elements in DOM for ' + accounts.length + ' accounts' +
     (domRows === 0 ? ' (no rows found on load)' :
      domRows >= accounts.length ? ' (renders everything at once: no paging, load-more, or virtualization)' : ' (paged, load-more, or virtualized)'));
-
-  await tableControlChecks(page, add);
 
   // Reachability: first, middle, and last account must be reachable in the
   // rendered UI (visible, via search, or via a pager).
@@ -271,12 +198,168 @@ async function checkTablesBuild(browser, dirArg, FIXTURE) {
     'clicked a destructive control; no dialog or confirm text detected (may be a no-op bulk button with nothing selected; verify manually)');
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForTimeout(1200);
+}
+
+async function checkDashboardBuild(browser, dirArg, FIXTURE) {
+  const dir = path.resolve(dirArg);
+  const file = path.join(dir, 'index.html');
+  const src = fs.readFileSync(file, 'utf8');
+  const url = 'file:///' + file.replace(/\\/g, '/');
+  const results = [];
+  const add = (id, pass, detail) => results.push({ id, pass, detail });
+
+  // ---- source-level checks ----
+  const companies = FIXTURE.recent_signups.map(s => s.company);
+  const missingCompanies = companies.filter(c => !src.includes(c.replace(/&/g, '&').split('&')[0].trim()) && !src.includes(c));
+  add('DATA-companies', missingCompanies.length === 0,
+    missingCompanies.length ? 'missing: ' + missingCompanies.join(', ') : 'all 14 signup companies present in source');
+
+  const features = FIXTURE.feature_adoption_pct.map(f => f.feature);
+  const missingFeatures = features.filter(f => !src.includes(f));
+  add('DATA-features', missingFeatures.length === 0,
+    missingFeatures.length ? 'missing: ' + missingFeatures.join(', ') : 'all 7 features present in source');
+
+  const seriesProbe = [String(FIXTURE.mrr_usd[0]), String(FIXTURE.mrr_usd[12]), String(FIXTURE.weekly_active_users[0])];
+  const missingSeries = seriesProbe.filter(v => !src.includes(v));
+  add('DATA-series', missingSeries.length === 0,
+    missingSeries.length ? 'probe values absent: ' + missingSeries.join(', ') : 'history series values present');
+
+  sharedSourceChecks(src, add);
+
+  // ---- rendered checks, desktop ----
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500); // let any boot/loading sequence settle
+
+  add('RUNTIME-no-errors', errors.length === 0, errors.length ? errors.slice(0, 3).join(' | ') : 'no console/page errors');
+
+  await tableControlChecks(page, add);
+
+  await dashboardReachProbe(page, FIXTURE, add);
+
+  // ---- rendered checks, narrow 375px ----
+  await narrowTableCheck(page, add);
+
+  await ctx.close();
+  fs.writeFileSync(path.join(dir, 'checks-report.json'), JSON.stringify({ dir, scenario: 'dashboard', when: new Date().toISOString(), results }, null, 2));
+  return results;
+}
+
+async function checkTablesBuild(browser, dirArg, FIXTURE) {
+  const dir = path.resolve(dirArg);
+  const file = path.join(dir, 'index.html');
+  const src = fs.readFileSync(file, 'utf8');
+  const url = 'file:///' + file.replace(/\\/g, '/');
+  const results = [];
+  const add = (id, pass, detail) => results.push({ id, pass, detail });
+  const accounts = FIXTURE.accounts;
+
+  // ---- source-level checks ----
+  const missingCompanies = accounts.map(a => a.company).filter(c => !src.includes(c));
+  add('DATA-companies', missingCompanies.length === 0,
+    missingCompanies.length
+      ? missingCompanies.length + ' of ' + accounts.length + ' account names missing from source, e.g. ' + missingCompanies.slice(0, 3).join(', ')
+      : 'all ' + accounts.length + ' account names present in source');
+
+  const owners = [...new Set(accounts.map(a => a.owner))];
+  const missingOwners = owners.filter(o => !src.includes(o));
+  add('DATA-owners', missingOwners.length === 0,
+    missingOwners.length ? missingOwners.length + ' owner name(s) missing, e.g. ' + missingOwners.slice(0, 3).join(', ') : 'all owner names present in source');
+
+  sharedSourceChecks(src, add);
+
+  // ---- rendered checks, desktop ----
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+
+  add('RUNTIME-no-errors', errors.length === 0, errors.length ? errors.slice(0, 3).join(' | ') : 'no console/page errors');
+
+  await tableControlChecks(page, add);
+  await tablesGridProbes(page, accounts, add);
 
   // ---- rendered checks, narrow 375px ----
   await narrowTableCheck(page, add);
 
   await ctx.close();
   fs.writeFileSync(path.join(dir, 'checks-report.json'), JSON.stringify({ dir, scenario: 'tables', when: new Date().toISOString(), results }, null, 2));
+  return results;
+}
+
+// Full scenario: one build carrying both a dashboard region and a data
+// grid, so the whole framework is exercised on a single artifact. Runs the
+// union of the dashboard and tables checks, with the shared source/runtime/
+// control/narrow checks run exactly once. Takes both fixtures as
+// FIXTURES = { dashboard, tables }.
+async function checkFullBuild(browser, dirArg, FIXTURES) {
+  const DASH = FIXTURES.dashboard;
+  const TBL = FIXTURES.tables;
+  const accounts = TBL.accounts;
+  const dir = path.resolve(dirArg);
+  const file = path.join(dir, 'index.html');
+  const src = fs.readFileSync(file, 'utf8');
+  const url = 'file:///' + file.replace(/\\/g, '/');
+  const results = [];
+  const add = (id, pass, detail) => results.push({ id, pass, detail });
+
+  // ---- source-level checks: dashboard data ----
+  const signupCompanies = DASH.recent_signups.map(s => s.company);
+  const missingSignups = signupCompanies.filter(c => !src.includes(c.replace(/&/g, '&').split('&')[0].trim()) && !src.includes(c));
+  add('DATA-signup-companies', missingSignups.length === 0,
+    missingSignups.length ? 'missing: ' + missingSignups.join(', ') : 'all 14 signup companies present in source');
+
+  const features = DASH.feature_adoption_pct.map(f => f.feature);
+  const missingFeatures = features.filter(f => !src.includes(f));
+  add('DATA-features', missingFeatures.length === 0,
+    missingFeatures.length ? 'missing: ' + missingFeatures.join(', ') : 'all 7 features present in source');
+
+  const seriesProbe = [String(DASH.mrr_usd[0]), String(DASH.mrr_usd[12]), String(DASH.weekly_active_users[0])];
+  const missingSeries = seriesProbe.filter(v => !src.includes(v));
+  add('DATA-series', missingSeries.length === 0,
+    missingSeries.length ? 'probe values absent: ' + missingSeries.join(', ') : 'history series values present');
+
+  // ---- source-level checks: accounts data ----
+  const missingAccounts = accounts.map(a => a.company).filter(c => !src.includes(c));
+  add('DATA-account-companies', missingAccounts.length === 0,
+    missingAccounts.length
+      ? missingAccounts.length + ' of ' + accounts.length + ' account names missing from source, e.g. ' + missingAccounts.slice(0, 3).join(', ')
+      : 'all ' + accounts.length + ' account names present in source');
+
+  const owners = [...new Set(accounts.map(a => a.owner))];
+  const missingOwners = owners.filter(o => !src.includes(o));
+  add('DATA-owners', missingOwners.length === 0,
+    missingOwners.length ? missingOwners.length + ' owner name(s) missing, e.g. ' + missingOwners.slice(0, 3).join(', ') : 'all owner names present in source');
+
+  sharedSourceChecks(src, add);
+
+  // ---- rendered checks, desktop ----
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(String(e)));
+  page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+  await page.goto(url, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+
+  add('RUNTIME-no-errors', errors.length === 0, errors.length ? errors.slice(0, 3).join(' | ') : 'no console/page errors');
+
+  await tableControlChecks(page, add);
+  await dashboardReachProbe(page, DASH, add);
+  await tablesGridProbes(page, accounts, add);
+
+  // ---- rendered checks, narrow 375px ----
+  await narrowTableCheck(page, add);
+
+  await ctx.close();
+  fs.writeFileSync(path.join(dir, 'checks-report.json'), JSON.stringify({ dir, scenario: 'full', when: new Date().toISOString(), results }, null, 2));
   return results;
 }
 
@@ -288,10 +371,16 @@ async function checkTablesBuild(browser, dirArg, FIXTURE) {
   const SCENARIOS = {
     dashboard: { fixture: 'data.json', check: checkDashboardBuild },
     tables: { fixture: 'tables-data.json', check: checkTablesBuild },
+    // full: one build carrying both UI types; loads both fixtures.
+    full: { fixtures: { dashboard: 'data.json', tables: 'tables-data.json' }, check: checkFullBuild },
   };
   if (!SCENARIOS[scenario]) { console.error('Unknown scenario: ' + scenario); process.exit(2); }
-  if (!dirs.length) { console.error('Usage: node checks.js [--scenario=dashboard|tables] <buildDir> [<buildDir> ...]'); process.exit(2); }
-  const FIXTURE = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', SCENARIOS[scenario].fixture), 'utf8'));
+  if (!dirs.length) { console.error('Usage: node checks.js [--scenario=dashboard|tables|full] <buildDir> [<buildDir> ...]'); process.exit(2); }
+  const load = f => JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', f), 'utf8'));
+  const sc = SCENARIOS[scenario];
+  const FIXTURE = sc.fixtures
+    ? Object.fromEntries(Object.entries(sc.fixtures).map(([k, f]) => [k, load(f)]))
+    : load(sc.fixture);
   const browser = await chromium.launch({ channel: 'chrome' });
   let failed = 0;
   for (const dir of dirs) {

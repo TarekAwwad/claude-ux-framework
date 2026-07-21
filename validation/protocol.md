@@ -37,19 +37,30 @@ the prompts were not recorded, and scoring leaned on static screenshots
 
 ## Scenarios
 
-The suite has two scenarios. Each is a (common body, fixture) pair; both
+The suite has three scenarios. Each is a (common body, fixture) pair; all
 share tokens.css and the preambles in prompts/.
 
 - dashboard: prompts/common-body.md + fixtures/data.json
 - tables: prompts/tables-common-body.md + fixtures/tables-data.json
+- full: prompts/full-common-body.md + both fixtures/data.json and
+  fixtures/tables-data.json
 
-checks.js takes `--scenario=<name>` (default dashboard). A run directory
-holds exactly one scenario; name tables run directories
-`runs/<date>-tables/` (and `runs/<date>-tables-diag/` for diagnostic
-runs, see below). A diagnostic run is a single-sided no-skill build used
-to source rules; it is never reported as a scored pair, and any published
-pair whose rules were partly sourced from a diagnostic of the same
-scenario must say so in its run log.
+The dashboard and tables scenarios test one UI type each in isolation. The
+full scenario puts both a dashboard region and a data grid on a single
+build, so the whole framework is exercised on one artifact and the entire
+audit checklist applies (the dashboard checks C17-C24, the tables checks
+C31-C40, and the shared state/hierarchy/nav checks). It reuses both pinned
+fixtures verbatim; no new data is authored.
+
+checks.js takes `--scenario=<name>` (default dashboard). For the full
+scenario it loads both fixtures and runs the union of the two scenarios'
+checks, with the shared source/runtime/control/narrow checks run once. A
+run directory holds exactly one scenario; name tables run directories
+`runs/<date>-tables/` and full run directories `runs/<date>-full/` (and
+`runs/<date>-tables-diag/` for diagnostic runs, see below). A diagnostic
+run is a single-sided no-skill build used to source rules; it is never
+reported as a scored pair, and any published pair whose rules were partly
+sourced from a diagnostic of the same scenario must say so in its run log.
 
 ## Running a round
 
