@@ -69,6 +69,51 @@ this same scenario (published in validation-runs/2026-07-20-tables-diag/).
 That makes the scenario a favorable test for the skill, and the number to
 weight accordingly; the baseline agent in the scored pair was fresh.
 
+## Full scenario: run 2026-07-21-full
+
+The first two scenarios test one UI type each. This one tests both at
+once: a single Ledgerline "operations overview" build that carries a
+business-health dashboard and the 400-account grid on one screen (two
+tabs), so the whole framework is exercised on one artifact and the entire
+40-check checklist applies. It reuses both pinned fixtures verbatim
+(data.json for the metrics, tables-data.json for the accounts); no new
+data or rules were introduced, and no diagnostic run fed it.
+
+| Build | Blocker | Major | Minor |
+|-------|---------|-------|-------|
+| Baseline (control) | 1 | 3 | 2 |
+| With-skill | 0 | 0 | 0 |
+
+Both builds put the accounts grid behind a second tab, which tripped four
+automated checks that run on load; each was resolved by driving the tab by
+hand and is not scored as a failure (the scorecard lists them). The scored
+gap is the same shape the tables scenario found, on a build that also
+carries a competent dashboard: the baseline grid has no loading and no
+error state (C1, the run's only blocker), never freezes the Company
+identifier column on horizontal scroll (C34), sorts by bare header clicks
+with no aria-sort or keyboard path (C36), and leaves the scroll container
+an unlabeled non-focusable region (C40); its lone opacity transition has no
+reduced-motion guard and it uses `:focus` rather than `:focus-visible`
+(the two minors). The with-skill build clears all of these and adds the
+visible touches the skill argues for: chip filters and "Needs attention" /
+"Missing data" quick filters instead of plain selects, health shown as a
+number plus a text label (At risk / Watch / Healthy, not color alone), and
+an explicit "Not set" for null fields. The baseline is not weak: it ships
+the full data contract, paging, working search and filters, bulk actions,
+a guarded delete, and a zero-match empty state. The difference is states,
+table accessibility, and motion, which is where the checklist concentrates.
+
+One honesty item specific to this run. The first baseline agent, given the
+byte-symmetric common body with no preamble, invoked the ux-framework
+skill on its own (it wrote a UX spec and ran the audit checklist). That
+contaminates the control, so its build was discarded and the baseline was
+rebuilt by a fresh agent under an explicit control preamble forbidding any
+skill use. Earlier runs disclosed baseline agents skipping optional skills
+on their own; this run is the mirror case, and the control preamble is the
+concrete fix the earlier notes called for. The experimental variable is
+unchanged (skill vs no skill); only the control is now enforced rather
+than assumed. Full disclosure is in the run log.
+
 ## All runs
 
 | Run | Suite wording | Without | With | Notes |
@@ -78,6 +123,7 @@ weight accordingly; the baseline agent in the scored pair was fresh.
 | 2026-07-20b | v2 | 1 / 3 / 3 | 0 / 0 / 1 | reachability + theme pinned; with-skill dinged for an undeclared spacing scale |
 | 2026-07-20c | v4 | 1 / 2 / 1 | 0 / 0 / 0 | design tokens pinned; published pair |
 | 2026-07-21-tables | tables v1 | 1 / 4 / 2 | 0 / 1 / 0 | different scenario (customer table, not the dashboard); see the Tables scenario section above for its diagnostic-sourcing disclosure |
+| 2026-07-21-full | full v1 | 1 / 3 / 2 | 0 / 0 / 0 | combined scenario (dashboard + 400-account grid on one build); no diagnostic sourcing; baseline re-run under an explicit control preamble (see the Full scenario section) |
 
 Scores across rows are not strictly comparable (the prompt wording
 evolved between runs, and the token fixture in v4 pre-solves checks that

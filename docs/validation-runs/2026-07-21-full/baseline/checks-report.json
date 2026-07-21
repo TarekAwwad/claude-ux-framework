@@ -1,0 +1,117 @@
+{
+  "dir": "D:\\Code\\Claude-UX-skill-creator\\validation\\runs\\2026-07-21-full\\baseline",
+  "scenario": "full",
+  "when": "2026-07-21T18:25:58.536Z",
+  "results": [
+    {
+      "id": "DATA-signup-companies",
+      "pass": true,
+      "detail": "all 14 signup companies present in source"
+    },
+    {
+      "id": "DATA-features",
+      "pass": true,
+      "detail": "all 7 features present in source"
+    },
+    {
+      "id": "DATA-series",
+      "pass": true,
+      "detail": "history series values present"
+    },
+    {
+      "id": "DATA-account-companies",
+      "pass": true,
+      "detail": "all 400 account names present in source"
+    },
+    {
+      "id": "DATA-owners",
+      "pass": true,
+      "detail": "all owner names present in source"
+    },
+    {
+      "id": "STYLE-tokens-inlined",
+      "pass": true,
+      "detail": "token block present verbatim (probed)"
+    },
+    {
+      "id": "STYLE-no-foreign-colors",
+      "pass": true,
+      "detail": "every hex literal is a token value"
+    },
+    {
+      "id": "A11Y-focus-visible",
+      "pass": false,
+      "detail": "focus-visible styling in CSS"
+    },
+    {
+      "id": "A11Y-reduced-motion",
+      "pass": false,
+      "detail": "build animates; prefers-reduced-motion guard MISSING"
+    },
+    {
+      "id": "CRAFT-no-transition-all",
+      "pass": true,
+      "detail": "no `transition: all`"
+    },
+    {
+      "id": "CRAFT-no-emoji-icons",
+      "pass": true,
+      "detail": "no emoji in markup"
+    },
+    {
+      "id": "RUNTIME-no-errors",
+      "pass": true,
+      "detail": "no console/page errors"
+    },
+    {
+      "id": "TABLE-search",
+      "pass": true,
+      "detail": "1 search input(s) found"
+    },
+    {
+      "id": "TABLE-sortable",
+      "pass": true,
+      "detail": "9 sortable header control(s) found (bare th-click sorting counts but is mouse-only; check keyboard access manually)"
+    },
+    {
+      "id": "TABLE-filter-controls",
+      "pass": true,
+      "detail": "6 filter-capable control(s) found (selects, chips, tabs; may include demo controls; verify manually)"
+    },
+    {
+      "id": "DATA-series-reachable",
+      "pass": true,
+      "detail": "churn/WAU probe values visible on load"
+    },
+    {
+      "id": "GRID-windowed-rows",
+      "pass": true,
+      "detail": "52 row elements in DOM for 400 accounts (paged, load-more, or virtualized)"
+    },
+    {
+      "id": "DATA-rows-reachable",
+      "pass": false,
+      "detail": "Atlasgrove Legal: NOT REACHABLE by probe; Gablewood Print: NOT REACHABLE by probe; Gablewood Media: NOT REACHABLE by probe (virtualized scroll is invisible to this probe; verify by hand before scoring it a failure)"
+    },
+    {
+      "id": "STATE-empty-search",
+      "pass": false,
+      "detail": "zero-result search shows no guidance message (blank or silent region)"
+    },
+    {
+      "id": "GRID-selection",
+      "pass": true,
+      "detail": "25 row-selection affordance(s) found (checkboxes or aria-selected rows)"
+    },
+    {
+      "id": "GRID-destructive-guard",
+      "pass": false,
+      "detail": "clicked a destructive control; no dialog or confirm text detected (may be a no-op bulk button with nothing selected; verify manually)"
+    },
+    {
+      "id": "RESP-columns-survive",
+      "pass": true,
+      "detail": "ok(4 cols, fits); ok(6 cols, scrolls); ok(12 cols, fits)"
+    }
+  ]
+}
