@@ -12,9 +12,16 @@ the prompts were not recorded, and scoring leaned on static screenshots
 ## Design rules
 
 1. Symmetric prompts. Both agents get the byte-identical body in the
-   scenario's common-body file (see Scenarios). The with-skill agent
-   additionally gets the preamble in prompts/with-skill.md. That preamble
-   is the entire experimental variable.
+   scenario's common-body file (see Scenarios). Each side additionally gets
+   a preamble: prompts/with-skill.md tells the with-skill agent to read and
+   follow the skill; prompts/baseline.md tells the baseline agent not to use
+   or read the skill. The opposed pair of preambles is the entire
+   experimental variable. The explicit baseline exclusion is required
+   because the ux-framework skill is installed in the running session and
+   auto-triggers on "build a UI", so a fresh subagent will otherwise invoke
+   it on its own and contaminate the control (observed both ways: a baseline
+   that followed the skill, and, in an earlier run, a baseline that guessed
+   the setup and abstained).
 2. Pinned data and style. The scenario's fixture (see Scenarios) is the
    single source of data
    and fixtures/tokens.css the single source of visual style (palette,
@@ -72,8 +79,9 @@ sourced from a diagnostic of the same scenario must say so in its run log.
 2. Create `runs/<date>/baseline/` and `runs/<date>/with-skill/`.
 3. Compose the two prompts: substitute `<REPO>` with the repo root and
    `<OUTPUT_DIR>` with the respective run subdirectory. Baseline = the
-   scenario's common body only. With-skill = preamble, then the
-   scenario's common body.
+   baseline preamble (prompts/baseline.md), then the scenario's common
+   body. With-skill = the with-skill preamble (prompts/with-skill.md),
+   then the scenario's common body.
 4. Launch both subagents in parallel, one prompt each. Store both composed
    prompts verbatim in `runs/<date>/run.md`.
 5. Score, in this order:
