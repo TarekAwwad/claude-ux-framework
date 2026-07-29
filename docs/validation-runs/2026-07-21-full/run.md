@@ -178,4 +178,7 @@ prompt (verbatim)" above, with OUTPUT_DIR = .../baseline)
 
 ## Results
 
-(filled in after scoring)
+Scored: baseline 1 blocker / 3 major / 2 minor, with-skill 0 / 0 / 0.
+Per-check findings, the four automated flags resolved by hand as probe
+artifacts, and the independent verification of the with-skill claims are
+in [scorecard.md](scorecard.md).

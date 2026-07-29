@@ -29,7 +29,8 @@ the skill.
 The baseline's failures: zero state handling of any kind (the blocker), a
 static table with no search, sort, or filter, page-level horizontal
 overflow at phone width, and bare-label card titles. The with-skill build
-cleared all 30 checks; the same page-overflow bug the baseline shipped was
+cleared all 30 checks (the checklist as it stood then, before the tables
+module added C31-C40); the same page-overflow bug the baseline shipped was
 caught and fixed by the with-skill agent's own render-and-verify pass.
 
 Because the styling is pinned, the judgment differences are directly
@@ -129,6 +130,15 @@ Scores across rows are not strictly comparable (the prompt wording
 evolved between runs, and the token fixture in v4 pre-solves checks that
 v1 baselines could fail); within each row the comparison is same-day,
 same-prompt, same-environment.
+
+The checklist itself also grew. The three 2026-07-20 runs were scored
+against 30 checks, which is what their scorecards say; the tables module
+added C31-C40, so the tables and full runs are scored against 40. The
+tables run walks all 40 but marks the checks with no counterpart on a
+standalone grid (most of the dashboard and navigation ones) as not
+applicable; the full run is the only scenario where the whole checklist
+has something to score, since it is the only one carrying both a
+dashboard region and a data grid.
 
 ## What persists across every dashboard-scenario run
 
